@@ -4,7 +4,7 @@ project:
   teamId: 'ADOSMI'
   identities: {}
   notifications:
-    email: 'adolfojose.escribano@alu.uclm.es,osacar.merino2@alu.uclm.es,miguel.haro1@alu.uclm.es'
+    email: 'adolfojose.escribano@alu.uclm.es,oscar.merino2@alu.uclm.es,miguel.haro1@alu.uclm.es,alberto.cuenca2@alu.uclm.es'
   members:
     member1:
       name: 'Adolfo'
@@ -19,6 +19,6 @@ project:
       surname: 'Haro' 
       githubUsername: 'MigueldHaro'
     member4:
-      name: 'Name4'
-      surname: 'Surname4' 
-      githubUsername: 'Name1gitUserName4'
+      name: 'Alberto'
+      surname: 'Cuenca' 
+      githubUsername: 'AlbertoCuencaAleman'
