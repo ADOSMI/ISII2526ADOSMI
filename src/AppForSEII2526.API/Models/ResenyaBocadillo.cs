@@ -1,21 +1,32 @@
-﻿namespace AppForSEII2526.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore; // <-- importante
+
+[PrimaryKey(nameof(BocadilloId), nameof(ResenyaId))]
+public class ResenyaBocadillo
 {
-    
-    public class ResenyaBocadillo
+    public ResenyaBocadillo() { }
+
+    public ResenyaBocadillo(int bocadilloId, int puntuacion, int resenyaId)
     {
-        public ResenyaBocadillo()
-        {
-        }
-        public ResenyaBocadillo(int id, string descripcion)
-        {
-            Id = id;
-            Descripcion = descripcion;
-        }
-        public int Id { get; set; }
-        //DESCRIPCIÓN DE LA RESEÑA DEL BOCADILLO
-        [Display(Name = "Descripción de la reseña del bocadillo")]
-        [StringLength(200, ErrorMessage = "La descripción de la reseña del bocadillo no puede ser mayor de 200 caracteres")]
-        public string Descripcion { get; set; }
-        public IList<Bocadillo> Bocadillos { get; set; } = new List<Bocadillo>();
+        BocadilloId = bocadilloId;
+        Puntuacion = puntuacion;
+        ResenyaId = resenyaId;
     }
+
+    public int BocadilloId { get; set; }
+
+    public int ResenyaId { get; set; }
+
+    [Required]
+    [Range(1, 10, ErrorMessage = "La puntuación debe estar entre 1 y 10")]
+    [Display(Name = "Puntuación")]
+    public int Puntuacion { get; set; }
+
+    [ForeignKey("BocadilloId")]
+    public Bocadillo Bocadillo { get; set; }
+
+    [ForeignKey("ResenyaId")]
+    public Resenya Resenya { get; set; }
 }
+
