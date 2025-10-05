@@ -14,6 +14,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Resenya> Resenya { get; set; }
     public DbSet<ResenyaBocadillo> ResenyaBocadillo { get; set; }
     public DbSet<TipoPan> TipoPan { get; set; }
+    public DbSet<CompraBocadillo> CompraBocadillo { get; set; }
+    public DbSet<Compra> Compra { get; set; }
 
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -30,8 +32,12 @@ public class ApplicationDbContext : DbContext
         //CLAVES ALTERNATIVAS
         builder.Entity<BonosComprados>()
             .HasAlternateKey(bc => new { bc.Id, bc.IdCompra });
+
         builder.Entity<ResenyaBocadillo>()
                 .HasAlternateKey(rb => new { rb.ResenyaId, rb.BocadilloId });
+
+        builder.Entity<CompraBocadillo>()
+            .HasAlternateKey(cb => new { cb.BocadilloId, cb.CompraId });
     }
 }
 

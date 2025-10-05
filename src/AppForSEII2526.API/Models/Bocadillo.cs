@@ -6,24 +6,33 @@ public class Bocadillo
 	{
 	}
 
-	public Bocadillo(int comprasDelBocadillo, int id, string nombre, double pvp, int stock, int panId)
+	public Bocadillo(CompraBocadillo comprasDelBocadillo, int id, string nombre, double pvp, int stock, TipoPan tipoPan)
 	{
 		ComprasDelBocadillo = comprasDelBocadillo;
 		Id = id;
 		Nombre = nombre;
 		PVP = pvp;
+        ResenyaBocadillo = resenyaBocadillo;
 		Stock = stock;
-        PanId = panId;
+        TipoPan = tipoPan;
         ResenyasBocadillo = new List<ResenyaBocadillo>();
 	}
 
-	[Key] //Clave Primaria
+    public Bocadillo(int id, string nombre, double pvp, ResenyaBocadillo resenyaBocadillo, int stock, string tamanyo, TipoPan tipoPan)
+    {
+        Id = id;
+        Nombre = nombre;
+        PVP = pvp;
+        ResenyaBocadillo = resenyaBocadillo;
+        Stock = stock;
+        Tamanyo = tamanyo;
+        TipoPan = tipoPan;
+    }
+
+    [Key] //Clave Primaria
     public int Id { get; set; }
 
-    [Display(Name = "Compras del bocadillo")]
-    [Range(1, int.MaxValue, ErrorMessage = "El mínimo de compras de bocadillo es 1")]
-    public int ComprasDelBocadillo {  get; set; }
-
+    
     [Required]
     [StringLength(50, ErrorMessage = "El nombre del bocadillo no puede contener más de 50 caracteres.")]
     public string Nombre { get; set; }
@@ -39,14 +48,17 @@ public class Bocadillo
 
     public Tamano Tamano { get; set; }
 
-    // Clave foránea a TipoPan
-    [ForeignKey("TipoPan")]
-    public int PanId { get; set; }
+    //TAMAÑO
+    [Display(Name = "tamaño bocadillo")]
+    [StringLength(40, ErrorMessage = "El nombre del bocadillo no puede ser mayor de 40 caracteres")]
+    public string Tamanyo { get; set; }
+
+   
     public TipoPan TipoPan { get; set; }
 
     public IList<ResenyaBocadillo> ResenyasBocadillo { get; set; }
 
-    
+    public IList<CompraBocadillo> CompraBocadillo { get; set; }
 
 }
 
