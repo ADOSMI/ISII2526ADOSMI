@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TipoBocadillo">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TipoBocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonoBocadillo" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="AppForSEII2526.API.Models.CompraBono">
+    <Position X="9" Y="1.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="AppForSEII2526.API.Models.CompraBono.EnumMetodosPago">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\CompraBono.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAACAAAGAAEAAAAAACAAAAACAAAAAAIAAAAgAAAAEAA=</HashCode>
+      <FileName>Models\CompraBono.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonosComprados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BonosComprados">
+    <Position X="6" Y="1.25" Width="1.5" />
+    <AssociationLine Name="BonoBocadillo" Type="BonoBocadillo" FixedFromPoint="true">
+      <Path>
+        <Point X="6" Y="2.562" />
+        <Point X="4.75" Y="2.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAGAAEAAAAAQAAAAAAABAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Models\BonosComprados.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="BonoBocadillo" />
+      <Property Name="CompraBono" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BonoBocadillo">
+    <Position X="3.25" Y="1.25" Width="1.5" />
+    <AssociationLine Name="TipoBocadillo" Type="TipoBocadillo" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.562" />
+        <Point X="2.838" Y="2.562" />
+        <Point X="2.838" Y="2.562" />
+        <Point X="2" Y="2.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="BonosComprados" Type="BonosComprados" FixedFromPoint="true">
+      <Path>
+        <Point X="4.75" Y="1.875" />
+        <Point X="6" Y="1.875" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIIEAAAAAAAAAgAAAAAAAgAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\BonoBocadillo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TipoBocadillo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="BonosComprados" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
