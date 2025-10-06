@@ -1,25 +1,26 @@
-﻿using System;
-
+﻿namespace AppForSEII2526.API.Models
+{
 public class TipoPan
 {
 	public TipoPan()
 	{
 	}
 
-	public TipoPan(string nombre, int panId){
-		 Nombre = nombre;
+    public TipoPan(int id, string nombre)
+    {
+        Id = id;
+		Nombre = nombre;
 		 PanId = panId;
 		 Bocadillos = new List<Bocadillo>();
 	}
 
+    public int Id { get; set; }
     
-    [Key] //Clave Primaria
-    public int PanId { get; set; }
-
-    [Required(ErrorMessage = "El nombre del tipo de pan es obligatorio.")]
-    [StringLength(50, ErrorMessage = "El nombre del tipo de pan no puede contener más de 50 caracteres.")]
+    //NOMBRE DEL PAN
+    [Display(Name = "Nombre del pan")]
+    [StringLength(40, ErrorMessage = "El nombre del pan no puede ser mayor de 40 caracteres")]
     public string Nombre { get; set; }
 
-    public IList<Bocadillo> Bocadillos { get; set; }
-
+    public IList<Bocadillo> Bocadillos { get; set; } = new List<Bocadillo>();
+    }
 }
