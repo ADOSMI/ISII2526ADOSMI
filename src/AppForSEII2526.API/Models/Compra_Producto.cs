@@ -44,6 +44,7 @@
 
         [StringLength(50, ErrorMessage = "El segundo apellido no puede tener más de 50 caracteres.")]
         public string Apellido_2 { get; set; } 
+        
 
         public IList<Producto_Compra> ListaCompra = new List<Producto_Compra>();
         

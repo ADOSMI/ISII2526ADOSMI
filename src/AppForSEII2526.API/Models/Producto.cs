@@ -6,13 +6,15 @@ namespace AppForSEII2526.API.Models
     {
         public Producto() { }
 
-        public Producto(int productoId, string nombre, double pvp, int stock, int tipoProductoId)
+        public Producto(int productoId, string nombre, double pvp, int stock, int tipoProductoId, TipoProducto tipoProducto)
         {
             ProductoId = productoId;
             Nombre = nombre;
             PVP = pvp;
             Stock = stock;
-            
+            TipoProducto = tipoProducto;
+
+
         }
 
         [Key]
@@ -31,7 +33,8 @@ namespace AppForSEII2526.API.Models
         [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
         public int Stock { get; set; }
 
-       
+        public TipoProducto TipoProducto { get; set; }
+
 
         // Relación con Producto_Compra
         public IList<Producto_Compra> producto_Compras { get; set; } = new List<Producto_Compra>();
