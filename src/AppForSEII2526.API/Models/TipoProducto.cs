@@ -11,6 +11,7 @@
            
         }
 
+        [Key]
         public int ProductoId { get; set; }
 
         // NOMBRE DEL PRODUCTO
