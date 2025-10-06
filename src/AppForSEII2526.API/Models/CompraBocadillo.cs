@@ -18,7 +18,7 @@ namespace AppForSEII2526.API.Models
             Cantidad = cantidad;
             Precio = bocadillo.PVP;
             NombreBocadillo = bocadillo.Nombre;
-            TipoPan = bocadillo.TipoPan;
+            TipoPan = bocadillo.TipoPan.Nombre;
         }
 
         public Bocadillo Bocadillo { get; set; }
@@ -32,10 +32,10 @@ namespace AppForSEII2526.API.Models
         public int Cantidad { get; set; }
 
         [Precision(10, 2)]
-        public decimal Precio { get; set; }
+        public double Precio { get; set; }
 
         public string NombreBocadillo { get; set; }
 
-        public TipoPan TipoPan { get; set; }
+        public string TipoPan { get; set; }
     }
 }
