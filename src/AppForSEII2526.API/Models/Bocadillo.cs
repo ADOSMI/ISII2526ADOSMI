@@ -6,24 +6,22 @@ public class Bocadillo
 	{
 	}
 
-	public Bocadillo(CompraBocadillo comprasDelBocadillo, int id, string nombre, double pvp, int stock, TipoPan tipoPan)
+	public Bocadillo( int id, string nombre, double pvp, int stock, TipoPan tipoPan)
 	{
-		ComprasDelBocadillo = comprasDelBocadillo;
+		
 		Id = id;
 		Nombre = nombre;
 		PVP = pvp;
-        ResenyaBocadillo = resenyaBocadillo;
-		Stock = stock;
+        Stock = stock;
         TipoPan = tipoPan;
-        ResenyasBocadillo = new List<ResenyaBocadillo>();
+        
 	}
 
-    public Bocadillo(int id, string nombre, double pvp, ResenyaBocadillo resenyaBocadillo, int stock, string tamanyo, TipoPan tipoPan)
+    public Bocadillo(int id, string nombre, double pvp, int stock, string tamanyo, TipoPan tipoPan)
     {
         Id = id;
         Nombre = nombre;
         PVP = pvp;
-        ResenyaBocadillo = resenyaBocadillo;
         Stock = stock;
         Tamanyo = tamanyo;
         TipoPan = tipoPan;

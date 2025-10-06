@@ -54,7 +54,7 @@ namespace AppForSEII2526.API.Models
 
         //PRECIO TOTAL
         [Precision(10, 2)]
-        public decimal PrecioTotal { get; set; }
+        public double PrecioTotal { get; set; }
 
         //NÚMERO DE BOCADILLOS
         [Required]
