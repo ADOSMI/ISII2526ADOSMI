@@ -32,12 +32,6 @@ public class ApplicationDbContext : DbContext
         //CLAVES ALTERNATIVAS
         builder.Entity<BonosComprados>()
             .HasAlternateKey(bc => new { bc.Id, bc.IdCompra });
-        builder.Entity<ResenyaBocadillo>()
-                .HasAlternateKey(rb => new { rb.ResenyaId, rb.BocadilloId });
-    }
-}
-
-
 
         builder.Entity<ResenyaBocadillo>()
                 .HasAlternateKey(rb => new { rb.ResenyaId, rb.BocadilloId });
@@ -48,7 +42,6 @@ public class ApplicationDbContext : DbContext
 }
 
 
-   
 
-   
+
 
