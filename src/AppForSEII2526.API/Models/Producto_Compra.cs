@@ -18,12 +18,10 @@
         //[ForeignKey("Producto")] ??
         public int ProductoId { get; set; }
 
-        [Required]
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima de compra es 1")]
         public int Cantidad { get; set; }
 
         // Precio unitario en el momento de la compra
-        [Required]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(1, float.MaxValue, ErrorMessage = "Precio mínimo es 1")]
         [Display(Name = "Precio unitario")]
