@@ -31,11 +31,9 @@ public class Bocadillo
     public int Id { get; set; }
 
     
-    [Required]
     [StringLength(50, ErrorMessage = "El nombre del bocadillo no puede contener más de 50 caracteres.")]
     public string Nombre { get; set; }
 
-    [Required]
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     [Range(1, float.MaxValue, ErrorMessage = "Precio mínimo es 1")]
     [Display(Name = "Precio")]
