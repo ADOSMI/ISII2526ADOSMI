@@ -9,24 +9,33 @@ public class ApplicationUser : IdentityUser
     public ApplicationUser()
     {
     }
-    public ApplicationUser(string id, string name, string surname, string userName)
+    public ApplicationUser(string id, string nombre, string apellido1, string apellido2, string userName)
     {
         Id = id;
-        Name = name;
-        Surname = surname;
+        Nombre = nombre;
+        Apellido1 = apellido1;
+        Apellido2 = apellido2;
         UserName = userName;
         Email = userName;
     }
 
-    [Display(Name = "Name")]
-    public string? Name
+    [Required]
+    [Display(Name = "Nombre")]
+    public string Nombre
     {
         get;
         set;
     }
 
-    [Display(Name = "Surname")]
-    public string? Surname
+    [Required]
+    [Display(Name = "Apellido1")]
+    public string Apellido1
+    {
+        get;
+        set;
+    }
+    [Display(Name = "Apellido2")]
+    public string? Apellido2
     {
         get;
         set;

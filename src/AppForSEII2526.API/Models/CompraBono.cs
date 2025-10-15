@@ -9,7 +9,7 @@ namespace AppForSEII2526.API.Models
 	    {
 	    }
 
-        public CompraBono(string apellidoBono1, string apellidoBono2, int compraBonoId, DateTime fechaCompraBono, EnumMetodosPago metodoPago, int nBonos, string nombreCliente, double precioTotalBono, IList<BonosComprados> bonosComprados)
+        public CompraBono(ApplicationUser aplicationUser ,string apellidoBono1, string apellidoBono2, int compraBonoId, DateTime fechaCompraBono, EnumMetodosPago metodoPago, int nBonos, string nombreCliente, double precioTotalBono, IList<BonosComprados> bonosComprados)
         {
             ApellidoBono1 = apellidoBono1;
             ApellidoBono2 = apellidoBono2;
@@ -17,9 +17,10 @@ namespace AppForSEII2526.API.Models
             FechaCompra = fechaCompraBono;
             MetodoPago = metodoPago;
             NBonos = nBonos;
-            NombreCliente = nombreCliente;
+            ApplicationUser = aplicationUser;
             PrecioTotalBono = precioTotalBono;
             BonosComprados = bonosComprados;
+            
         }
 
 
@@ -40,7 +41,7 @@ namespace AppForSEII2526.API.Models
         public int Id { get; set; }
 
         //FECHA DE COMPRA
-        [Required, DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha de compra")]
         public DateTime FechaCompra { get; set; }
 
@@ -67,6 +68,9 @@ namespace AppForSEII2526.API.Models
         public double PrecioTotalBono { get; set; }
 
         public IList<BonosComprados> BonosComprados { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
+
 
 
         public enum EnumMetodosPago
