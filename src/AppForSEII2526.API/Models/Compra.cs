@@ -57,11 +57,11 @@ namespace AppForSEII2526.API.Models
         public double PrecioTotal { get; set; }
 
         //NÚMERO DE BOCADILLOS
-        [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Tiene que haber al menos 1 bocadillo")]
         public int NumBocadillos { get; set; }
 
         //MÉTODO DE PAGO
+        [Required]
         [Display(Name = "Metodo de pago")]
         public EnumMetodosPago MetodoPago { get; set; }
 
