@@ -20,7 +20,6 @@ public class BonosComprados
     public int Id { get; set; }
 
     //CANTIDAD COMPRA
-    [Required]
     [Display(Name = "Cantidad de Compra")]
     [Range(1, int.MaxValue, ErrorMessage = "La cantidad mínima de compra es 1")]
     public int Cantidad { get; set; }
@@ -29,7 +28,6 @@ public class BonosComprados
     public int IdCompra { get; set; }
 
     //PRECIO BONO
-    [Required]
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     [Range(1, float.MaxValue, ErrorMessage = "Precio mínimo es 1")]
     [Display(Name = "Precio")]
