@@ -25,7 +25,7 @@
         public string DireccionEnvio { get; set; }
 
         [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-        [Required, DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha de publicación")]
         public DateTime FechaCompra { get; set; }
 
@@ -34,7 +34,7 @@
         public string Metodo_Pago { get; set; }
 
 
-        [Required(ErrorMessage = "El precio final es obligatorio.")]
+        [(ErrorMessage = "El precio final es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "El precio final debe ser mayor que 0.")]
         public int PrecioFinal { get; set; }
 
