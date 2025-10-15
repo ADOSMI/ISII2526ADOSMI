@@ -27,12 +27,12 @@ public class Resenya
     public string Descripcion { get; set; }
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-    [Required, DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     [Display(Name = "Fecha de publicación")]
     public DateTime FechaPublicacion { get; set; }
 
     [StringLength(50, ErrorMessage = "El nombre de usuario no puede ocupar más de 50 caracteres")]
-    public string NombreUsuario { get; set; }
+    public string? NombreUsuario { get; set; }
 
     [Required]
     [StringLength(50, ErrorMessage = "El título no puede ocupar más de 50 caracteres")]
