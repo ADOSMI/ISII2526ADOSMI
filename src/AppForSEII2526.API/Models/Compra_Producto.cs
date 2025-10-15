@@ -34,7 +34,7 @@
         public string Metodo_Pago { get; set; }
 
 
-        [(ErrorMessage = "El precio final es obligatorio.")]
+        [StringLength(50,ErrorMessage = "El precio final es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "El precio final debe ser mayor que 0.")]
         public int PrecioFinal { get; set; }
 

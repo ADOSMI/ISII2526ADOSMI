@@ -12,6 +12,34 @@ namespace AppForSEII2526.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ApplicationUser",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Compra",
                 columns: table => new
                 {
@@ -40,32 +68,13 @@ namespace AppForSEII2526.API.Migrations
                     DireccionEnvio = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Metodo_Pago = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    PrecioFinal = table.Column<int>(type: "int", nullable: false),
+                    PrecioFinal = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     Apellido_1 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Apellido_2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Compra_Producto", x => x.Compraid);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompraBono",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApellidoBono1 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    ApellidoBono2 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NBonos = table.Column<int>(type: "int", nullable: false),
-                    NombreCliente = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    PrecioTotalBono = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompraBono", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,7 +85,7 @@ namespace AppForSEII2526.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     FechaPublicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NombreUsuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Valoracion = table.Column<int>(type: "int", nullable: false)
                 },
@@ -122,6 +131,31 @@ namespace AppForSEII2526.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoProducto", x => x.ProductoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompraBono",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApellidoBono1 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    ApellidoBono2 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    NBonos = table.Column<int>(type: "int", nullable: false),
+                    NombreCliente = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    PrecioTotalBono = table.Column<double>(type: "float", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompraBono", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompraBono_ApplicationUser_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUser",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -337,6 +371,11 @@ namespace AppForSEII2526.API.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompraBono_ApplicationUserId",
+                table: "CompraBono",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Producto_TipoProductoProductoId",
                 table: "Producto",
                 column: "TipoProductoProductoId");
@@ -390,6 +429,9 @@ namespace AppForSEII2526.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoBocadillo");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUser");
 
             migrationBuilder.DropTable(
                 name: "TipoProducto");
