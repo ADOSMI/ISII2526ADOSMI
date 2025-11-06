@@ -139,12 +139,9 @@ namespace AppForSEII2526.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApellidoBono1 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    ApellidoBono2 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MetodoPago = table.Column<int>(type: "int", nullable: false),
                     NBonos = table.Column<int>(type: "int", nullable: false),
-                    NombreCliente = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     PrecioTotalBono = table.Column<double>(type: "float", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
