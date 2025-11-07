@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251106184259_CreateIdentitySchema")]
+    [Migration("20251107173608_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -349,11 +349,6 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Tamano")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tamanyo")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<int>("TipoPanId")
                         .HasColumnType("int");
 
@@ -437,6 +432,9 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -458,6 +456,8 @@ namespace AppForSEII2526.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Resenya");
                 });
@@ -603,6 +603,15 @@ namespace AppForSEII2526.API.Migrations
                     b.Navigation("BonoBocadillo");
 
                     b.Navigation("CompraBono");
+                });
+
+            modelBuilder.Entity("Resenya", b =>
+                {
+                    b.HasOne("AppForSEII2526.API.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("ResenyaBocadillo", b =>
