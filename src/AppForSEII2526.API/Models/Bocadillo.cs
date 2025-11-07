@@ -55,6 +55,6 @@ public class Bocadillo
 
 public enum Tamano
 {
-    Pequeño,
+    Grande,
     Normal
 }

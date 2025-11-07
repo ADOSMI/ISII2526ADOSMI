@@ -191,7 +191,6 @@ namespace AppForSEII2526.API.Migrations
                     PVP = table.Column<double>(type: "float", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     Tamano = table.Column<int>(type: "int", nullable: false),
-                    Tamanyo = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     TipoPanId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

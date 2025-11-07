@@ -21,18 +21,12 @@ namespace AppForSEII2526.API.Controllers
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<BocadilloDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetBocadillosForCompra( string? nombre, Tamano? tamano, TipoPan? tipoPan, double? precio)
+        public async Task<ActionResult> GetBocadillosForCompra(Tamano? tamano, String? tipoPan)
         {
             var bocadillos = await _context.Bocadillo
                 .Include(b=>b.TipoPan)
-                .Include(b=>b.CompraBocadillo)
-                    .ThenInclude(cb=>cb.Compra)
-                .Where(b=>((b.Nombre.Contains(nombre)) || (nombre==null))
-                    && ((b.TipoPan.Nombre.Equals(tipoPan)) || (tipoPan==null))
-                    && ((b.PVP <= precio) || (precio==null))
-                    && ((b.Tamano == tamano) || (tamano==null)))
-                .OrderBy(b=>b.Nombre)
-                    .ThenBy(b => b.PVP)
+                .Where(b=>(((b.TipoPan.Nombre.Equals(tipoPan)) || (tipoPan==null))
+                    && ((b.Tamano.Equals(tamano)) || (tamano==null))))
                 .Select(b=>new BocadilloDTO(b.Id, b.Nombre, b.Tamano, b.TipoPan, b.PVP)
                     ).ToListAsync();
             return Ok(bocadillos);

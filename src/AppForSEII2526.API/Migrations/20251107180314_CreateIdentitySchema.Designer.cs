@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251015151905_CreateIdentitySchema")]
+    [Migration("20251107180314_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -363,11 +363,6 @@ namespace AppForSEII2526.API.Migrations
 
                     b.Property<int>("Tamano")
                         .HasColumnType("int");
-
-                    b.Property<string>("Tamanyo")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("TipoPanId")
                         .HasColumnType("int");

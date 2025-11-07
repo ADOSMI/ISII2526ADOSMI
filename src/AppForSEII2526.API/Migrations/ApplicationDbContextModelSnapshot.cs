@@ -361,11 +361,6 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("Tamano")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tamanyo")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<int>("TipoPanId")
                         .HasColumnType("int");
 
