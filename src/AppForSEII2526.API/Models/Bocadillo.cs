@@ -6,7 +6,7 @@ public class Bocadillo
 	{
 	}
 
-	public Bocadillo( int id, string nombre, double pvp, int stock, TipoPan tipoPan)
+	public Bocadillo( int id, string nombre, double pvp, int stock, TipoPan tipoPan, Tamano tamano)
 	{
 		
 		Id = id;
@@ -14,23 +14,13 @@ public class Bocadillo
 		PVP = pvp;
         Stock = stock;
         TipoPan = tipoPan;
-        
+        Tamano = tamano;
 	}
 
-    public Bocadillo(int id, string nombre, double pvp, int stock, TipoPan tipoPan, Tamano tamano)
-    {
-
-        Id = id;
-        Nombre = nombre;
-        PVP = pvp;
-        Stock = stock;
-        TipoPan = tipoPan;
-        Tamano = tamano;
-
-    }
 
     [Key] //Clave Primaria
     public int Id { get; set; }
+
     
     [StringLength(50, ErrorMessage = "El nombre del bocadillo no puede contener más de 50 caracteres.")]
     public string Nombre { get; set; }
