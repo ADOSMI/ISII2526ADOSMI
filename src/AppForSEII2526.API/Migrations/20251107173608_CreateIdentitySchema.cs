@@ -78,23 +78,6 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Resenya",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    FechaPublicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Valoracion = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Resenya", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TipoBocadillo",
                 columns: table => new
                 {
@@ -156,6 +139,29 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Resenya",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    FechaPublicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NombreUsuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Valoracion = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Resenya", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Resenya_ApplicationUser_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUser",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BonoBocadillo",
                 columns: table => new
                 {
@@ -188,7 +194,6 @@ namespace AppForSEII2526.API.Migrations
                     PVP = table.Column<double>(type: "float", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     Tamano = table.Column<int>(type: "int", nullable: false),
-                    Tamanyo = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     TipoPanId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -386,6 +391,11 @@ namespace AppForSEII2526.API.Migrations
                 name: "IX_Producto_Compra_ResenyaId",
                 table: "Producto_Compra",
                 column: "ResenyaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resenya_ApplicationUserId",
+                table: "Resenya",
+                column: "ApplicationUserId");
         }
 
         /// <inheritdoc />
@@ -428,13 +438,13 @@ namespace AppForSEII2526.API.Migrations
                 name: "TipoBocadillo");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUser");
-
-            migrationBuilder.DropTable(
                 name: "TipoProducto");
 
             migrationBuilder.DropTable(
                 name: "TipoPan");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUser");
         }
     }
 }
