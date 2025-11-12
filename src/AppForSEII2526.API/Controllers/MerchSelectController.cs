@@ -20,7 +20,7 @@ namespace AppForSEII2526.API.Controllers
         }
 
         /// <summary>
-        /// Paso 2: devuelve los productos de merchandising disponibles.
+        /// Paso 2: devuelve los productos de merchandising disponibless
         /// Permite aplicar filtros opcionales por tipo de producto o precio máximo.
         /// </summary>
         /// <param name="tipo">Nombre o parte del tipo de producto (opcional)</param>
