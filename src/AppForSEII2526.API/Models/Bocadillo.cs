@@ -6,7 +6,7 @@ public class Bocadillo
 	{
 	}
 
-	public Bocadillo( int id, string nombre, double pvp, int stock, TipoPan tipoPan)
+	public Bocadillo( int id, string nombre, double pvp, int stock, TipoPan tipoPan, Tamano tamano)
 	{
 		
 		Id = id;
@@ -14,18 +14,9 @@ public class Bocadillo
 		PVP = pvp;
         Stock = stock;
         TipoPan = tipoPan;
-        
+        Tamano = tamano;
 	}
 
-    public Bocadillo(int id, string nombre, double pvp, int stock, string tamanyo, TipoPan tipoPan)
-    {
-        Id = id;
-        Nombre = nombre;
-        PVP = pvp;
-        Stock = stock;
-        Tamanyo = tamanyo;
-        TipoPan = tipoPan;
-    }
 
     [Key] //Clave Primaria
     public int Id { get; set; }
@@ -43,12 +34,6 @@ public class Bocadillo
     public int Stock { get; set; }
 
     public Tamano Tamano { get; set; }
-
-    //TAMAÑO
-    [Display(Name = "tamaño bocadillo")]
-    [StringLength(40, ErrorMessage = "El nombre del bocadillo no puede ser mayor de 40 caracteres")]
-    public string Tamanyo { get; set; }
-
    
     public TipoPan TipoPan { get; set; }
 
@@ -60,6 +45,6 @@ public class Bocadillo
 
 public enum Tamano
 {
-    Pequeño,
+    Grande,
     Normal
 }
