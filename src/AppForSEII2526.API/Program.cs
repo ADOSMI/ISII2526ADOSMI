@@ -1,4 +1,4 @@
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using System.Data.Common;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +27,6 @@ switch (connection2Database) {
         _connection.Open();
         builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite(_connection));
         break;
-
     case "AzureSQL":
         builder.Services.AddDbContext<ApplicationDbContext>(opt =>
                        opt.UseSqlServer(Environment.GetEnvironmentVariable("AzureSQL")));
