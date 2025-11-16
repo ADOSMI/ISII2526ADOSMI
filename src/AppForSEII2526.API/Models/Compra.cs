@@ -10,22 +10,33 @@ namespace AppForSEII2526.API.Models
     public class Compra
     {
         // Constructor vacío
-        public Compra() { 
+        public Compra()
+        {
         }
 
-        public Compra(int id, string apellido_1Cliente, string? apellido_2Cliente, string nombreCliente, DateTime fechaCompra, int nBocadillos, IList<CompraBocadillo> compraBocadillo, EnumMetodosPago metodoPago)
+        public Compra(DateTime fechaCompra, int nBocadillos, IList<CompraBocadillo> compraBocadillo, EnumMetodosPago metodoPago, ApplicationUser applicationUser,
+            string nombreCliente, string apellido1Cliente, string? apellido2Cliente)
         {
             PrecioTotal = compraBocadillo.Sum(cb => cb.Cantidad * cb.Precio);
-            Id = id;
-            Apellido_1Cliente = apellido_1Cliente;
-            Apellido_2Cliente = apellido_2Cliente;
             NombreCliente = nombreCliente;
+            Apellido_1Cliente = apellido1Cliente;
+            Apellido_2Cliente = apellido2Cliente;
+            ApplicationUser = applicationUser;
             FechaCompra = fechaCompra;
             NumBocadillos = nBocadillos;
             CompraBocadillo = compraBocadillo;
             MetodoPago = metodoPago;
         }
 
+        public Compra(DateTime fechaCompra, int nBocadillos, IList<CompraBocadillo> compraBocadillo, EnumMetodosPago metodoPago, ApplicationUser applicationUser)
+        {
+            PrecioTotal = compraBocadillo.Sum(cb => cb.Cantidad * cb.Precio);
+            ApplicationUser = applicationUser;
+            FechaCompra = fechaCompra;
+            NumBocadillos = nBocadillos;
+            CompraBocadillo = compraBocadillo;
+            MetodoPago = metodoPago;
+        }
 
         //ID COMPRA
         [Key] //Clave Primaria
@@ -65,6 +76,8 @@ namespace AppForSEII2526.API.Models
         [Display(Name = "Metodo de pago")]
         public EnumMetodosPago MetodoPago { get; set; }
 
+        public ApplicationUser ApplicationUser { get; set; }
+
         public IList<CompraBocadillo> CompraBocadillo { get; set; }
 
     }
@@ -79,4 +92,3 @@ namespace AppForSEII2526.API.Models
 
 
 }
-

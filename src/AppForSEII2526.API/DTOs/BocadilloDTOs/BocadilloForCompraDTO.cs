@@ -2,14 +2,14 @@
 
 namespace AppForSEII2526.API.DTOs.BocadilloDTOs
 {
-    public class BocadilloDTO
+    public class BocadilloForCompraDTO
     {
 
-        public BocadilloDTO()
+        public BocadilloForCompraDTO()
         { 
         }
 
-        public BocadilloDTO(int id, string nombre, Tamano tamano, TipoPan tipoPan, double precio)
+        public BocadilloForCompraDTO(int id, string nombre, Tamano tamano, string tipoPan, double precio)
         {
             Id = id;
             Nombre = nombre;
@@ -30,12 +30,12 @@ namespace AppForSEII2526.API.DTOs.BocadilloDTOs
 
         public Tamano Tamano { get; set; }
 
-        public TipoPan TipoPan { get; set; }
+        public string TipoPan { get; set; }
 
 
         public override bool Equals(object? obj)
         {
-            return obj is BocadilloDTO dTO &&
+            return obj is BocadilloForCompraDTO dTO &&
                    Id == dTO.Id &&
                    Nombre == dTO.Nombre &&
                    TipoPan == dTO.TipoPan &&

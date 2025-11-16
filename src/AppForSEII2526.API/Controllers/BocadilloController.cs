@@ -31,5 +31,21 @@ namespace AppForSEII2526.API.Controllers
             .ToListAsync();
             return Ok(bocadillos);
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<BocadilloForCompraDTO>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetBocadillosForCompra(Tamano? tamano, string? tipoPan)
+        {
+            var bocadillos = await _context.Bocadillo
+                .Include(b => b.TipoPan)
+                .Where(b => ((b.TipoPan.Nombre.Equals(tipoPan) || tipoPan == null)
+                    && (b.Tamano.Equals(tamano) || tamano == null) && b.Stock > 0))
+                .Select(b => new BocadilloForCompraDTO(b.Id, b.Nombre, b.Tamano, b.TipoPan.Nombre, b.PVP)
+                    ).ToListAsync();
+            return Ok(bocadillos);
+        }
+
     }
 }
