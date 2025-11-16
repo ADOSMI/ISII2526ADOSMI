@@ -1,4 +1,5 @@
-﻿namespace AppForSEII2526.API.DTOs.BocadilloDTOs
+﻿
+namespace AppForSEII2526.API.DTOs.BocadilloDTOs
 {
     public class BocadilloForReseñaDTO
     {
@@ -6,15 +7,7 @@
         {
         }
 
-        public BocadilloForReseñaDTO(string nombre, double pvp, Tamano tamano, TipoPan tipoPan)
-        {
-            Nombre = nombre;
-            PVP = pvp;
-            Tamano = tamano;
-            TipoPan = tipoPan;
-        }
-
-        public BocadilloForReseñaDTO(int id, string nombre, double pvp, Tamano tamano, TipoPan tipoPan)
+        public BocadilloForReseñaDTO(int id, string nombre, double pvp, Tamano tamano, string tipoPan)
         {
             Id = id;
             Nombre = nombre;
@@ -39,7 +32,18 @@
 
         public Tamano Tamano { get; set; }
 
-        public TipoPan TipoPan { get; set; }
+        public string TipoPan { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is BocadilloForReseñaDTO dTO &&
+                   Id == dTO.Id &&
+                   Nombre == dTO.Nombre &&
+                   PVP == dTO.PVP &&
+                   Stock == dTO.Stock &&
+                   Tamano == dTO.Tamano &&
+                   TipoPan == dTO.TipoPan;
+        }
     }
 
 }
