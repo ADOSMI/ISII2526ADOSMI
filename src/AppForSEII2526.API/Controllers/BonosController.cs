@@ -26,9 +26,9 @@ namespace AppForSEII2526.API.Controllers
             IList<BonosForCompraDTO> bonos = await _context
             .BonoBocadillo
             .Include(b => b.TipoBocadillo)
-            .Where(b => b.Nombre.Equals(nombre) || nombre == null
+            .Where(b => (b.Nombre.Equals(nombre) || nombre == null)
             && (b.TipoBocadillo.Nombre.Equals(tipobocadillo) || tipobocadillo == null)) //Filtros por numero de bocadillos y por tipo 
-            .Select(b => new BonosForCompraDTO(b.Nombre, b.PrecioPorBono, b.NumeroBocadillos, b.TipoBocadillo)) //Select con lo que mostraremos
+            .Select(b => new BonosForCompraDTO(b.Nombre, b.PrecioPorBono, b.NumeroBocadillos, b.TipoBocadillo.Nombre)) //Select con lo que mostraremos
             .ToListAsync();
             return Ok(bonos);
         }

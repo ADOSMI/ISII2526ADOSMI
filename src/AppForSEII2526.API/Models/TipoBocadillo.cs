@@ -6,12 +6,11 @@ public class TipoBocadillo
 	{
 	}
     
-	public TipoBocadillo(int id, string nombreTipo, IList<BonoBocadillo> bonoBocadillo)
+	public TipoBocadillo(int id, string nombreTipo)
     {
         Id = id;
         Nombre = nombreTipo;
-        BonoBocadillo = bonoBocadillo;
-
+        
     }
 
     //ID TIPO BOCADILLO
@@ -24,5 +23,5 @@ public class TipoBocadillo
     [StringLength(40, ErrorMessage = "Nombre de tipo de bocadiilo no puede ser mayor de 40 caracteres")]
     public string Nombre { get; set; }
 
-    public IList<BonoBocadillo> BonoBocadillo { get; set; }
+    public IList<BonoBocadillo> BonoBocadillo { get; set; } = new List<BonoBocadillo>();
 }

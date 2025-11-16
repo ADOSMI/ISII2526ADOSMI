@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:src/AppForSEII2526.API/Migrations/20251116175301_CreateIdentitySchema.Designer.cs
+    [Migration("20251116175301_CreateIdentitySchema")]
+========
     [Migration("20251112173024_CreateIdentitySchema")]
+>>>>>>>> origin/development:src/AppForSEII2526.API/Migrations/20251112173024_CreateIdentitySchema.Designer.cs
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -85,7 +89,7 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUser");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>
@@ -166,12 +170,20 @@ namespace AppForSEII2526.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+<<<<<<<< HEAD:src/AppForSEII2526.API/Migrations/20251116175301_CreateIdentitySchema.Designer.cs
+                    b.Property<string>("Apellido1")
+========
                     b.Property<string>("ApellidoBono1")
+>>>>>>>> origin/development:src/AppForSEII2526.API/Migrations/20251112173024_CreateIdentitySchema.Designer.cs
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+<<<<<<<< HEAD:src/AppForSEII2526.API/Migrations/20251116175301_CreateIdentitySchema.Designer.cs
+                    b.Property<string>("Apellido2")
+========
                     b.Property<string>("ApellidoBono2")
+>>>>>>>> origin/development:src/AppForSEII2526.API/Migrations/20251112173024_CreateIdentitySchema.Designer.cs
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
@@ -188,7 +200,11 @@ namespace AppForSEII2526.API.Migrations
                     b.Property<int>("NBonos")
                         .HasColumnType("int");
 
+<<<<<<<< HEAD:src/AppForSEII2526.API/Migrations/20251116175301_CreateIdentitySchema.Designer.cs
+                    b.Property<string>("Nombre")
+========
                     b.Property<string>("NombreCliente")
+>>>>>>>> origin/development:src/AppForSEII2526.API/Migrations/20251112173024_CreateIdentitySchema.Designer.cs
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
