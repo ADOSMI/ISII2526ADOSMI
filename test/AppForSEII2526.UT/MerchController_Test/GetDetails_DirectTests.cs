@@ -46,7 +46,7 @@ namespace AppForSEII2526.UT.MerchController_test
             _controller = new MerchController(_context, mockLogger.Object);
         }
 
-        // ✅ Caso 1: Devuelve correctamente el detalle del producto con ID válido
+        //  Devuelve correctamente el detalle del producto con ID válido
         [Fact(DisplayName = "GetDetails devuelve el producto correcto para un ID existente")]
         public async Task GetDetails_ReturnsValidProduct()
         {
@@ -66,7 +66,7 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Empty(dto.Items); // En tu DTO los items se inicializan vacíos
         }
 
-        // ⚠️ Caso 2: Producto no encontrado
+        //  Producto no encontrado
         [Fact(DisplayName = "GetDetails devuelve NotFound si el producto no existe")]
         public async Task GetDetails_ReturnsNotFound()
         {
@@ -78,7 +78,7 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal("No se encontró ningún producto con ID 99.", result.Value);
         }
 
-        // 🧩 Caso 3: Comprueba que el tipo y los datos del DTO son correctos
+        //  Comprueba que el tipo y los datos del DTO son correctos
         [Fact(DisplayName = "GetDetails incluye correctamente tipo, precio y stock")]
         public async Task GetDetails_ReturnsCorrectDTOData()
         {
@@ -94,7 +94,7 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal(10, dto.Stock);
         }
 
-        // 🧱 Caso 4: Producto con stock 0 también se muestra correctamente
+        // Producto con stock 0 también se muestra correctamente
         [Fact(DisplayName = "GetDetails devuelve el producto incluso si tiene stock 0")]
         public async Task GetDetails_StockZeroIsVisible()
         {
@@ -114,7 +114,7 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal(0, dto.Stock);
         }
 
-        // 🧠 Caso 5: El DTO devuelto tiene todos los campos esperados inicializados
+        //  El DTO devuelto tiene todos los campos esperados inicializados
         [Fact(DisplayName = "GetDetails devuelve un MerchDetailsDTO completo y válido")]
         public async Task GetDetails_ReturnsFullDTO()
         {
