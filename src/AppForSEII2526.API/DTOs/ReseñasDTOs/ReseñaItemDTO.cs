@@ -1,4 +1,4 @@
-namespace AppForSEII2526.API.DTOs.ReseñaDTOs
+namespace AppForSEII2526.API.DTOs.ReseñasDTOs
 {
     public class ReseñaItemDTO
     {
