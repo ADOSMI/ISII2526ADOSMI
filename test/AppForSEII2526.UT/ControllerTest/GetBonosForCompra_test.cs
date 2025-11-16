@@ -1,13 +1,12 @@
 using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs.BonosDTOs;
 using AppForSEII2526.API.Models;
-using AppForSEII2526.UT;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
 
-namespace AppForSEII2526.UT.Controllers_test
+namespace AppForSEII2526.UT.ControllerTest
 {
     public class GetBonosForCompra_test : AppForSEII25264SqliteUT
     {
