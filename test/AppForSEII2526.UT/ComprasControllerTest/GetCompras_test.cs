@@ -1,6 +1,6 @@
 ﻿using AppForSEII2526.API.Controllers;
 using AppForSEII2526.API.DTOs.CompraBocadilloDTOs;
-using AppForSEII2526.API.DTOs.ComprasDTOs;
+using AppForSEII2526.API.DTOs;
 using Humanizer.Localisation;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,4 +1,5 @@
 using AppForSEII2526.API.DTOs.ReseñaDTOs;
+using AppForSEII2526.API.DTOs.ReseñasDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
