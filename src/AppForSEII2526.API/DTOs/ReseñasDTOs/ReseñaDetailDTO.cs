@@ -1,4 +1,5 @@
 
+using AppForSEII2526.API.DTOs.ReseñasDTOs;
 using static Resenya;
 
 namespace AppForSEII2526.API.DTOs.ReseñaDTOs
