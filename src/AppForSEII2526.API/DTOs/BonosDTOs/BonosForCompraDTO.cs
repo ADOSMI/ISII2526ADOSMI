@@ -1,9 +1,10 @@
 
+
 namespace AppForSEII2526.API.DTOs.BonosDTOs
 {
     public class BonosForCompraDTO
     {
-        public BonosForCompraDTO(string nombre, double precio, int numeroBocadillos,TipoBocadillo tipoBocadillo)
+        public BonosForCompraDTO(string nombre, double precio, int numeroBocadillos,string tipoBocadillo)
         {
             Nombre = nombre;
             Precio = precio;
@@ -11,7 +12,7 @@ namespace AppForSEII2526.API.DTOs.BonosDTOs
             TipoBocadillo = tipoBocadillo;
         }
 
-        public BonosForCompraDTO(int id,string nombre, double precio, int numeroBocadillos, TipoBocadillo tipoBocadillo)
+        public BonosForCompraDTO(int id,string nombre, double precio, int numeroBocadillos, string tipoBocadillo)
         {
             Id = id;
             Nombre = nombre;
@@ -46,9 +47,23 @@ namespace AppForSEII2526.API.DTOs.BonosDTOs
         public int NumeroBocadillos { get; set; }
 
         //TIPO BOCADILLO 
-        public TipoBocadillo TipoBocadillo { get; set; }
+        [StringLength(50, ErrorMessage = "El Titulo no puede ser mayor de 50 caracteres")]
+        [Display(Name = "Nombre Bono")]
+        public string TipoBocadillo { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is BonosForCompraDTO dTO &&
+                   Id == dTO.Id &&
+                   Nombre == dTO.Nombre &&
+                   Precio == dTO.Precio &&
+                   NumeroBocadillos == dTO.NumeroBocadillos &&
+                   TipoBocadillo == dTO.TipoBocadillo;
+        }
 
-
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Nombre, Precio, NumeroBocadillos, TipoBocadillo);
+        }
     }
 }

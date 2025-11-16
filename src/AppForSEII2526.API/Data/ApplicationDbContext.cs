@@ -20,7 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<TipoProducto> TipoProducto { get; set; }
     public DbSet<Producto> Producto { get; set; }
     public DbSet<Producto_Compra> Producto_Compra { get; set; }
-    public DbSet <Compra_Producto> Compra_Producto { get; set; }
+    public DbSet<Compra_Producto> Compra_Producto { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
