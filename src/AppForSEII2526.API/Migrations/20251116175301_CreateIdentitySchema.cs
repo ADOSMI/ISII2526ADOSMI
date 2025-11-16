@@ -12,34 +12,6 @@ namespace AppForSEII2526.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationUser",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellido1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellido2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Compra",
                 columns: table => new
                 {
@@ -134,25 +106,31 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompraBono",
+                name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NBonos = table.Column<int>(type: "int", nullable: false),
-                    PrecioTotalBono = table.Column<double>(type: "float", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompraBono", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompraBono_ApplicationUser_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "ApplicationUser",
-                        principalColumn: "Id");
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,33 +203,28 @@ namespace AppForSEII2526.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BonosComprados",
+                name: "CompraBono",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Cantidad = table.Column<int>(type: "int", nullable: false),
-                    IdCompra = table.Column<int>(type: "int", nullable: false),
-                    PrecioBono = table.Column<double>(type: "float", nullable: false),
-                    BonoBocadilloId = table.Column<int>(type: "int", nullable: false),
-                    CompraBonoId = table.Column<int>(type: "int", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Apellido1 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Apellido2 = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    NBonos = table.Column<int>(type: "int", nullable: false),
+                    PrecioTotalBono = table.Column<double>(type: "float", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BonosComprados", x => x.Id);
-                    table.UniqueConstraint("AK_BonosComprados_Id_IdCompra", x => new { x.Id, x.IdCompra });
+                    table.PrimaryKey("PK_CompraBono", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BonosComprados_BonoBocadillo_BonoBocadilloId",
-                        column: x => x.BonoBocadilloId,
-                        principalTable: "BonoBocadillo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BonosComprados_CompraBono_CompraBonoId",
-                        column: x => x.CompraBonoId,
-                        principalTable: "CompraBono",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_CompraBono_Users_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -342,6 +315,36 @@ namespace AppForSEII2526.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BonosComprados",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    IdCompra = table.Column<int>(type: "int", nullable: false),
+                    PrecioBono = table.Column<double>(type: "float", nullable: false),
+                    BonoBocadilloId = table.Column<int>(type: "int", nullable: false),
+                    CompraBonoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BonosComprados", x => x.Id);
+                    table.UniqueConstraint("AK_BonosComprados_Id_IdCompra", x => new { x.Id, x.IdCompra });
+                    table.ForeignKey(
+                        name: "FK_BonosComprados_BonoBocadillo_BonoBocadilloId",
+                        column: x => x.BonoBocadilloId,
+                        principalTable: "BonoBocadillo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BonosComprados_CompraBono_CompraBonoId",
+                        column: x => x.CompraBonoId,
+                        principalTable: "CompraBono",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Bocadillo_TipoPanId",
                 table: "Bocadillo",
@@ -428,7 +431,7 @@ namespace AppForSEII2526.API.Migrations
                 name: "TipoBocadillo");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUser");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "TipoProducto");

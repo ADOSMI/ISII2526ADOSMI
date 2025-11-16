@@ -19,7 +19,7 @@ public class BonoBocadillo
     }
 
     //TIPO BOCADILLO 
-    [Required]  
+     
     public TipoBocadillo TipoBocadillo  { get; set; }
 
     //BONO BOCADILLO ID

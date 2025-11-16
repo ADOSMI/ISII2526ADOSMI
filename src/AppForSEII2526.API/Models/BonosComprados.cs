@@ -15,6 +15,14 @@ public class BonosComprados
         CompraBono = compraBono;
     }
 
+    public BonosComprados(int cantidad, double precioBono, BonoBocadillo bonoBocadillo, CompraBono compraBono)
+    {
+        Cantidad = cantidad;
+        PrecioBono = precioBono;
+        BonoBocadillo = bonoBocadillo;
+        CompraBono = compraBono;
+    }
+
     //BONO COMPRADOS ID
     [Key] //Clave Primaria
     public int Id { get; set; }
