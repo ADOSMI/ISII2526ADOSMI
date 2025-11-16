@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTOs\ReseñaDTOs\**" />
+    <Content Remove="DTOs\ReseñaDTOs\**" />
+    <EmbeddedResource Remove="DTOs\ReseñaDTOs\**" />
+    <None Remove="DTOs\ReseñaDTOs\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.DataAnnotations.Validation" Version="3.2.0-rc1.20223.4" />
@@ -30,3 +37,5 @@
   </ItemGroup>
 
 </Project>
+
+

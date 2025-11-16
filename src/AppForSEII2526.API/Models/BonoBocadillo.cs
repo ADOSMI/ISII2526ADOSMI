@@ -8,7 +8,7 @@ public class BonoBocadillo
 
 	public BonoBocadillo(TipoBocadillo tipobocadillo, int bonoBocadilloId, int cantidadDisponible, int nBocadillos, string nombre, double PVP, IList<BonosComprados> bonosComprados)
 	{
-        TipoBocadillo tipoBocadillo;
+        TipoBocadillo = tipobocadillo;
 		Id = bonoBocadilloId;
         CantidadDisponible = cantidadDisponible;
         NumeroBocadillos = nBocadillos;
@@ -19,7 +19,7 @@ public class BonoBocadillo
     }
 
     //TIPO BOCADILLO 
-    [Required]  //Requerido porque es 1 a N
+     
     public TipoBocadillo TipoBocadillo  { get; set; }
 
     //BONO BOCADILLO ID

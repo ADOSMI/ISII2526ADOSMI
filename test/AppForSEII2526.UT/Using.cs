@@ -10,5 +10,6 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using AppForSEII2526.API.Data;
 global using AppForSEII2526.API.Models;
+global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Logging;
 global using Moq;

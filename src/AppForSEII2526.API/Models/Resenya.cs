@@ -6,17 +6,18 @@ public class Resenya
 {
     public Resenya()
     {
-        ResenyaBocadillos = new List<ResenyaBocadillo>();
+        
     }
 
-    public Resenya(string descripcion, DateTime fechaPublicacion, int id, string nombreUsuario, string titulo)
+    public Resenya(string descripcion, DateTime fechaPublicacion, int id, ApplicationUser applicationUser , string titulo, Valoracion_General valoracion)
     {
         Descripcion = descripcion;
         FechaPublicacion = fechaPublicacion;
         Id = id;
-        NombreUsuario = nombreUsuario;
+        ApplicationUser = applicationUser;
         Titulo = titulo;
         ResenyaBocadillos = new List<ResenyaBocadillo>();
+        Valoracion = valoracion;
     }
 
     [Key] // Clave primaria
@@ -37,6 +38,8 @@ public class Resenya
     [Required]
     [StringLength(50, ErrorMessage = "El título no puede ocupar más de 50 caracteres")]
     public string Titulo { get; set; }
+
+    public ApplicationUser ApplicationUser { get; set; }
 
     [Required]
     public Valoracion_General Valoracion { get; set; }
