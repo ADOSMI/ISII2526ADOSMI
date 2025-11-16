@@ -1,6 +1,5 @@
-using AppForMovies.UT;
 using AppForSEII2526.API.Controllers;
-using AppForSEII2526.API.DTOs.ReseñaDTOs;
+using AppForSEII2526.API.DTOs.ReseñasDTOs;
 using AppForSEII2526.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
