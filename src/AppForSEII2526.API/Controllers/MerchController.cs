@@ -40,7 +40,7 @@ namespace AppForSEII2526.API.Controllers
 
 
 
-        // ✅ PASO 7: Mostrar detalle de producto por ID 
+        //  Mostrar detalle de producto por ID 
 
         [HttpGet("details/{id}")]
 
@@ -94,7 +94,7 @@ namespace AppForSEII2526.API.Controllers
 
 
 
-        // ✅ PASO 5: Crear una compra 
+        //  Crear una compra 
 
         [HttpPost("comprar")]
 
