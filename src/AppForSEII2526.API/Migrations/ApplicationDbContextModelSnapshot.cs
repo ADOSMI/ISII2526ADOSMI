@@ -82,7 +82,7 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUser");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>

@@ -12,11 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII2526.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:src/AppForSEII2526.API/Migrations/20251107180314_CreateIdentitySchema.Designer.cs
-    [Migration("20251107180314_CreateIdentitySchema")]
-========
-    [Migration("20251107173608_CreateIdentitySchema")]
->>>>>>>> origin/development:src/AppForSEII2526.API/Migrations/20251107173608_CreateIdentitySchema.Designer.cs
+    [Migration("20251114172014_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -89,7 +85,7 @@ namespace AppForSEII2526.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationUser");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AppForSEII2526.API.Models.Compra", b =>

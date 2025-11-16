@@ -6,6 +6,7 @@ namespace AppForSEII2526.API.Data;
 
 public class ApplicationDbContext : DbContext
 {
+    public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<BonoBocadillo> BonoBocadillo { get; set; }
     public DbSet<BonosComprados> BonosComprados { get; set; }
     public DbSet<CompraBono> CompraBono { get; set; }
