@@ -1,6 +1,6 @@
 ﻿using AppForSEII2526.API.Data;
 using AppForSEII2526.API.DTOs.CompraBocadilloDTOs;
-using AppForSEII2526.API.DTOs.ComprasDTOs;
+using AppForSEII2526.API.DTOs;
 using System.Linq;
 
 namespace AppForSEII2526.API.Controllers
