@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AppForSEII2526.API;
 using System.Data.Common;
 
-namespace AppForSEII2526.UT
-{
+namespace AppForSEII2526.UT {
     public class AppForSEII25264SqliteUT {
         protected readonly DbConnection _connection;
         protected readonly ApplicationDbContext _context;

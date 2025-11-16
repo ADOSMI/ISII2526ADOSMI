@@ -17,7 +17,7 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
-        //CONTROLADOR BOCADILLOS
+        
         [HttpGet]
         [Route("actionBocadillos")]
         [ProducesResponseType(typeof(IList<BocadilloForReseñaDTO>), (int)HttpStatusCode.OK)]
@@ -27,7 +27,7 @@ namespace AppForSEII2526.API.Controllers
             .Bocadillo
             .Where(b => (b.Nombre.Equals(nombre) || nombre == null)
             && (b.PVP.Equals(pvp) || pvp == null)) //Filtros por numero de bocadillos y por tipo 
-            .Select(b => new BocadilloForReseñaDTO(b.Nombre, b.PVP, b.Tamano, b.TipoPan)) //Select con lo que mostraremos
+            .Select(b => new BocadilloForReseñaDTO(b.Id, b.Nombre, b.PVP, b.Tamano, b.TipoPan.Nombre)) //Select con lo que mostraremos
             .ToListAsync();
             return Ok(bocadillos);
         }
