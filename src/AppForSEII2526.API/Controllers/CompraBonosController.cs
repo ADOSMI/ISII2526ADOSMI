@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AppForSEII2526.API.Models;
 using AppForSEII2526.API.Data;
@@ -43,11 +42,11 @@ namespace AppForSEII2526.API.Controllers
              .Include(cb => cb.BonosComprados) //join con la tabla BonosComprados
                     .ThenInclude(ib => ib.BonoBocadillo) // then join con la tabla BonoBocadillo
                         .ThenInclude(bb => bb.TipoBocadillo) //then join con la tabla TipoBocadillo
-             .Select(b => new BonosDetailDTO(b.Id, b.Nombre,b.Apellido1,b.Apellido2, b.MetodoPago, b.FechaCompra, b.PrecioTotalBono,
+             .Select(b => new BonosDetailDTO(b.Id, b.Nombre, b.Apellido1, b.Apellido2, b.MetodoPago, b.FechaCompra, b.PrecioTotalBono,
                     b.BonosComprados
                         .Select(ib => new BonosItemDTO(ib.BonoBocadillo.Id, ib.BonoBocadillo.PrecioPorBono, ib.BonoBocadillo.NumeroBocadillos, ib.BonoBocadillo.Nombre, ib.BonoBocadillo.TipoBocadillo.Nombre, ib.BonoBocadillo.CantidadDisponible)).ToList<BonosItemDTO>()))
              .FirstOrDefaultAsync();
-             
+
 
             if (compraBonodto == null)
             {
@@ -78,7 +77,7 @@ namespace AppForSEII2526.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            CompraBono compraBono = new CompraBono( compraBonosParaCrear.Nombre, compraBonosParaCrear.Apellido1, compraBonosParaCrear.Apellido2, DateTime.Now, compraBonosParaCrear.MetodoPago, new List<BonosComprados>());
+            CompraBono compraBono = new CompraBono(compraBonosParaCrear.Nombre, compraBonosParaCrear.Apellido1, compraBonosParaCrear.Apellido2, DateTime.Now, compraBonosParaCrear.MetodoPago, new List<BonosComprados>());
 
             //debemos comprobar que hay suficiente cantidad para comprar en la base de datos
             BonoBocadillo bonoBocadillo;
@@ -96,11 +95,10 @@ namespace AppForSEII2526.API.Controllers
                         ModelState.AddModelError("ItemsCompraBono", $"Error. Bono titulado {item.Nombre} tiene solo {bonoBocadillo.CantidadDisponible} unidades disponibles pero {item.Cantidad} fueron seleccionadas");
                     }
                     else
+
+                    if (bonoBocadillo.PrecioPorBono == null || item.PrecioPorBono < 3)
                     {
-                        //DECREMENTAMOS EL NUMERO DE PELICULAS DISPONIBLES
-                        bonoBocadillo.CantidadDisponible -= item.Cantidad;
-                        compraBono.BonosComprados.Add(new BonosComprados(item.Cantidad, item.PrecioPorBono, bonoBocadillo, compraBono));
-                        
+                        ModelState.AddModelError("ItemsCompraBono", $"Error!. El precio debe ser mayor que 3");
                     }
                 }
 
@@ -135,3 +133,4 @@ namespace AppForSEII2526.API.Controllers
     }
 
 }
+
