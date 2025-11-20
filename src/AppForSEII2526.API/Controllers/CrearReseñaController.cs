@@ -68,6 +68,10 @@ namespace AppForSEII2526.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
+            if(!string.IsNullOrWhiteSpace(dto.Titulo) && !(dto.Titulo.StartsWith("Sugerencia para"))){
+                return BadRequest("Error!, el titulo de la reseña debe empezar por sugerencia para");
+            }
+
             // 🔍 Flujo alternativo 1 – Paso 3: no hay bocadillos seleccionados
             if (dto.ReseñaItemDTOs == null || dto.ReseñaItemDTOs.Count == 0)
             {

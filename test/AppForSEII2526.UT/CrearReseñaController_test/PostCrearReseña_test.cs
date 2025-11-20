@@ -50,7 +50,7 @@ namespace AppForSEII2526.UT.CrearReseñaTest
             var dtoSinBocadillos = new ReseñaCreateDTO
             {
                 NombreUsuario = "Mario",
-                Titulo = "Fallido",
+                Titulo = "Sugerencia para",
                 Descripcion = "Sin bocadillos",
                 Valoracion = Resenya.Valoracion_General.Cuatro,
                 ReseñaItemDTOs = new List<ReseñaItemDTO>()
@@ -60,7 +60,7 @@ namespace AppForSEII2526.UT.CrearReseñaTest
             var dtoBocadilloNoExiste = new ReseñaCreateDTO
             {
                 NombreUsuario = "Mario",
-                Titulo = "Fallido",
+                Titulo = "Sugerencia para",
                 Descripcion = "Bocadillo no existe",
                 Valoracion = Resenya.Valoracion_General.Tres,
                 ReseñaItemDTOs = new List<ReseñaItemDTO>
@@ -73,7 +73,7 @@ namespace AppForSEII2526.UT.CrearReseñaTest
             var dtoUsuarioNoExiste = new ReseñaCreateDTO
             {
                 NombreUsuario = "UsuarioNoExiste",
-                Titulo = "Fallido",
+                Titulo = "Sugerencia para",
                 Descripcion = "Usuario inexistente",
                 Valoracion = Resenya.Valoracion_General.Tres,
                 ReseñaItemDTOs = new List<ReseñaItemDTO>
@@ -123,8 +123,8 @@ namespace AppForSEII2526.UT.CrearReseñaTest
             var dto = new ReseñaCreateDTO
             {
                 NombreUsuario = "Mario",
-                Titulo = "Muy buena",
-                Descripcion = "Excelente combinación",
+                Titulo = "Sugerencia para",
+                Descripcion = "Sugerencia para",
                 Valoracion = Resenya.Valoracion_General.Cinco,
                 ReseñaItemDTOs = new List<ReseñaItemDTO>
                 {
@@ -157,6 +157,37 @@ namespace AppForSEII2526.UT.CrearReseñaTest
                 Assert.Equal(esperado.Tamano, actual.Tamano);
                 Assert.Equal(esperado.Puntuacion, actual.Puntuacion);
             }
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
+        public async Task CrearReseña_Examen_TEST()
+        {
+            var mock = new Mock<ILogger<CrearReseñaController>>();
+            ILogger<CrearReseñaController> logger = mock.Object;
+            var controller = new CrearReseñaController(_context, logger);
+
+            var dto = new ReseñaCreateDTO
+            {
+                NombreUsuario = "Mario",
+                Titulo = "Modificar el bocadillo",
+                Descripcion = "Excelente combinación",
+                Valoracion = Resenya.Valoracion_General.Cinco,
+                ReseñaItemDTOs = new List<ReseñaItemDTO>
+                {
+                    new ReseñaItemDTO(1,"Serranito",4.0,Tamano.Grande,9),
+                    new ReseñaItemDTO(2,"Completo",3.5,Tamano.Normal,8)
+                }
+            };
+
+            // Act
+            var result = await controller.CreateReseña(dto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("Error!, el titulo de la reseña debe empezar por sugerencia para", badRequestResult.Value);
+
         }
     }
 }
