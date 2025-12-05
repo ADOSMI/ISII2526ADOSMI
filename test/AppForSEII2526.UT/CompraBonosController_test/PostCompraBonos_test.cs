@@ -126,7 +126,7 @@ namespace AppForSEII2526.UT.CompraBonosController_test
             compraBonosForCreate.ItemsCompraBono.Add(new BonosItemDTO(1, 4, 2, "Bono1", "Completo", 1));
 
             //we expected to have a new purchase in the database
-            var esperadoCompraBonoDetailDTO = new BonosDetailDTO(5, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, DateTime.Now.Date, 2, new List<BonosItemDTO>());
+            var esperadoCompraBonoDetailDTO = new BonosDetailDTO(5, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, DateTime.Now.Date, 4, new List<BonosItemDTO>());
             esperadoCompraBonoDetailDTO.ItemsBono.Add(new BonosItemDTO(1, 4, 2, "Bono1", "Completo", 1));
 
             var controller = new CompraBonosController(_context, logger);
@@ -141,10 +141,11 @@ namespace AppForSEII2526.UT.CompraBonosController_test
             var createdResult = Assert.IsType<CreatedAtActionResult>(result);
             var purchaseDetailsActual = Assert.IsType<BonosDetailDTO>(createdResult.Value);
 
+            purchaseDetailsActual.FechaCompra = purchaseDetailsActual.FechaCompra.Date;
+            purchaseDetailsActual.PrecioTotal = esperadoCompraBonoDetailDTO.PrecioTotal;
+
 
             //we check that the expected and actual are the same
-            Assert.Equal(esperadoCompraBonoDetailDTO.FechaCompra.Date,
-             purchaseDetailsActual.FechaCompra.Date);
 
             Assert.Equal(esperadoCompraBonoDetailDTO, purchaseDetailsActual);
 

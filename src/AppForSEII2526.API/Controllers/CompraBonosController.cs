@@ -94,11 +94,23 @@ namespace AppForSEII2526.API.Controllers
                     {
                         ModelState.AddModelError("ItemsCompraBono", $"Error. Bono titulado {item.Nombre} tiene solo {bonoBocadillo.CantidadDisponible} unidades disponibles pero {item.Cantidad} fueron seleccionadas");
                     }
-                    else
-
+                    
                     if (bonoBocadillo.PrecioPorBono == null || item.PrecioPorBono < 3)
                     {
                         ModelState.AddModelError("ItemsCompraBono", $"Error!. El precio debe ser mayor que 3");
+                    }
+
+                    if (compraBono.MetodoPago == null)
+                    {
+                        ModelState.AddModelError("ItemsCompraBono", $"Error. Metodo de pago no puede estar vacio, introduce metodo de pago");
+                    }
+                    if (compraBono.Apellido1 == null)
+                    {
+                        ModelState.AddModelError("ItemsCompraBono", $"Error. Primer apellido no puede estar vacio, introduce primer apellido");
+                    }
+                    if (compraBono.Apellido2 == null)
+                    {
+                        ModelState.AddModelError("ItemsCompraBono", $"Error. Segundo apellido no puede estar vacio, introduce segundo apellido");
                     }
                 }
 
