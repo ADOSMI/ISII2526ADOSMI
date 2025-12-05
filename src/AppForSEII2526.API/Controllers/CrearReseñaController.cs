@@ -68,8 +68,14 @@ namespace AppForSEII2526.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            if(!string.IsNullOrWhiteSpace(dto.Titulo) && !(dto.Titulo.StartsWith("Sugerencia para"))){
+            if (!string.IsNullOrWhiteSpace(dto.Titulo) && !(dto.Titulo.StartsWith("Sugerencia para")))
+            {
                 return BadRequest("Error!, el titulo de la reseña debe empezar por sugerencia para");
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Descripcion))
+            {
+                return BadRequest("Error!, la descripcion de la reseña no puede estar vacia");
             }
 
             // 🔍 Flujo alternativo 1 – Paso 3: no hay bocadillos seleccionados
