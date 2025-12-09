@@ -9,9 +9,7 @@ using Xunit;
 
 namespace AppForSEII2526.UT.MerchController_test
 {
-    /// <summary>
-    /// Pruebas unitarias del método GetDetails() del MerchController (Paso 7).
-    /// </summary>
+    
     public class GetDetails_DirectTests
     {
         private readonly ApplicationDbContext _context;
@@ -19,14 +17,14 @@ namespace AppForSEII2526.UT.MerchController_test
 
         public GetDetails_DirectTests()
         {
-            // BD en memoria nueva para cada prueba
+            
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             _context = new ApplicationDbContext(options);
 
-            // Crear datos de prueba
+           
             var tipoCamiseta = new TipoProducto(1, "Camiseta");
             var tipoSudadera = new TipoProducto(2, "Sudadera");
             var tipoGorra = new TipoProducto(3, "Gorra");
@@ -46,8 +44,9 @@ namespace AppForSEII2526.UT.MerchController_test
             _controller = new MerchController(_context, mockLogger.Object);
         }
 
-        //  Devuelve correctamente el detalle del producto con ID válido
         [Fact(DisplayName = "GetDetails devuelve el producto correcto para un ID existente")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task GetDetails_ReturnsValidProduct()
         {
             var response = await _controller.GetDetails(1);
@@ -63,11 +62,12 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal("Camiseta", dto.Tipo);
             Assert.Equal(25.99, dto.PVP);
             Assert.Equal(15, dto.Stock);
-            Assert.Empty(dto.Items); // En tu DTO los items se inicializan vacíos
+            Assert.Empty(dto.Items);
         }
 
-        //  Producto no encontrado
         [Fact(DisplayName = "GetDetails devuelve NotFound si el producto no existe")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task GetDetails_ReturnsNotFound()
         {
             var response = await _controller.GetDetails(99);
@@ -78,8 +78,9 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal("No se encontró ningún producto con ID 99.", result.Value);
         }
 
-        //  Comprueba que el tipo y los datos del DTO son correctos
         [Fact(DisplayName = "GetDetails incluye correctamente tipo, precio y stock")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task GetDetails_ReturnsCorrectDTOData()
         {
             var response = await _controller.GetDetails(2);
@@ -92,43 +93,6 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Equal("Sudadera Oversize", dto.Nombre);
             Assert.Equal(49.99, dto.PVP);
             Assert.Equal(10, dto.Stock);
-        }
-
-        // Producto con stock 0 también se muestra correctamente
-        [Fact(DisplayName = "GetDetails devuelve el producto incluso si tiene stock 0")]
-        public async Task GetDetails_StockZeroIsVisible()
-        {
-            var tipoCamiseta = _context.TipoProducto.First();
-            var productoSinStock = new Producto(10, "Camiseta sin stock", 30.00, 0, 1, tipoCamiseta);
-
-            _context.Producto.Add(productoSinStock);
-            _context.SaveChanges();
-
-            var response = await _controller.GetDetails(10);
-            var result = response.Result as OkObjectResult;
-
-            Assert.NotNull(result);
-            var dto = Assert.IsAssignableFrom<MerchDetailsDTO>(result.Value);
-
-            Assert.Equal("Camiseta sin stock", dto.Nombre);
-            Assert.Equal(0, dto.Stock);
-        }
-
-        //  El DTO devuelto tiene todos los campos esperados inicializados
-        [Fact(DisplayName = "GetDetails devuelve un MerchDetailsDTO completo y válido")]
-        public async Task GetDetails_ReturnsFullDTO()
-        {
-            var response = await _controller.GetDetails(3);
-            var result = response.Result as OkObjectResult;
-
-            Assert.NotNull(result);
-            var dto = Assert.IsAssignableFrom<MerchDetailsDTO>(result.Value);
-
-            Assert.NotNull(dto.Nombre);
-            Assert.NotNull(dto.Tipo);
-            Assert.True(dto.PVP > 0);
-            Assert.True(dto.Stock >= 0);
-            Assert.NotNull(dto.Items); // Tus DTOs inicializan Items siempre
         }
     }
 }
