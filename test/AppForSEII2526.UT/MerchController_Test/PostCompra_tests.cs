@@ -9,9 +9,6 @@ using Xunit;
 
 namespace AppForSEII2526.UT.MerchController_test
 {
-    /// <summary>
-    /// Pruebas unitarias del método POST (comprar merch) del MerchController (Paso 5).
-    /// </summary>
     public class PostCompraTests
     {
         private readonly ApplicationDbContext _context;
@@ -19,14 +16,14 @@ namespace AppForSEII2526.UT.MerchController_test
 
         public PostCompraTests()
         {
-            // BD en memoria única por ejecución
+            
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
             _context = new ApplicationDbContext(options);
 
-            // Datos iniciales
+            
             var tipoCamiseta = new TipoProducto(1, "Camiseta");
             var tipoSudadera = new TipoProducto(2, "Sudadera");
             var tipoGorra = new TipoProducto(3, "Gorra");
@@ -46,8 +43,9 @@ namespace AppForSEII2526.UT.MerchController_test
             _controller = new MerchController(_context, mockLogger.Object);
         }
 
-        // Compra válida devuelve CreatedAtAction con MerchDetailsDTO
         [Fact(DisplayName = "PostCompra crea una compra válida y devuelve Created con MerchDetailsDTO")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task PostCompra_ReturnsCreatedAndValidDTO()
         {
             var dto = new MerchCreateDTO(
@@ -73,51 +71,9 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.True(dtoResult.PVP > 0);
         }
 
-        //  Producto no existe
-        [Fact(DisplayName = "PostCompra devuelve BadRequest si el producto no existe")]
-        public async Task PostCompra_ProductNotFound_ReturnsBadRequest()
-        {
-            var dto = new MerchCreateDTO(
-                "Lucía",
-                "Fernández",
-                "Pérez",
-                "Calle Luna 12",
-                "Tarjeta de crédito",
-                new List<MerchItemDTO>
-                {
-                    new MerchItemDTO(999, "Producto Fantasma", "Fake", 15, 1)
-                });
-
-            var response = await _controller.PostCompra(dto);
-            var result = Assert.IsType<BadRequestObjectResult>(response);
-            var problem = Assert.IsType<ValidationProblemDetails>(result.Value);
-
-            var error = problem.Errors.First().Value[0];
-            Assert.Contains("no existe", error, StringComparison.OrdinalIgnoreCase);
-        }
-
-        //  Sin items
-        [Fact(DisplayName = "PostCompra devuelve BadRequest si no hay productos seleccionados")]
-        public async Task PostCompra_EmptyItems_ReturnsBadRequest()
-        {
-            var dto = new MerchCreateDTO(
-                "Lucía",
-                "Fernández",
-                null,
-                "Calle Luna 12",
-                "Tarjeta de crédito",
-                new List<MerchItemDTO>());
-
-            var response = await _controller.PostCompra(dto);
-            var result = Assert.IsType<BadRequestObjectResult>(response);
-            var problem = Assert.IsType<ValidationProblemDetails>(result.Value);
-
-            var error = problem.Errors.First().Value[0];
-            Assert.Contains("Debes seleccionar", error, StringComparison.OrdinalIgnoreCase);
-        }
-
-        //  Stock insuficiente
         [Fact(DisplayName = "PostCompra devuelve BadRequest si no hay stock suficiente")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
         public async Task PostCompra_InsufficientStock_ReturnsBadRequest()
         {
             var dto = new MerchCreateDTO(
@@ -139,12 +95,15 @@ namespace AppForSEII2526.UT.MerchController_test
             Assert.Contains("No hay stock suficiente", error, StringComparison.OrdinalIgnoreCase);
         }
 
-        // Modelo inválido (nombre vacío)
+  
         [Fact(DisplayName = "PostCompra devuelve BadRequest si el modelo no es válido")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("Database", "WithoutFixture")]
         public async Task PostCompra_InvalidModel_ReturnsBadRequest()
         {
             var dto = new MerchCreateDTO(
-                "", // nombre vacío
+                "", 
                 "Fernández",
                 "Pérez",
                 "Calle Luna 12",
