@@ -1,0 +1,88 @@
+﻿@namespace AppForSEII2526.Web.Components.Shared
+
+<div class="modal fade show" id="DialogOKSaveDelete" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            @* Cabecera del Modal (Título y botón X) *@
+            <div class="modal-header">
+                <h4 class="modal-title">@Caption</h4>
+                <button type="button" class="close btn-close" aria-label="Close"
+                        @onclick="@Cancel">
+                </button>
+            </div>
+
+            @* Cuerpo del mensaje *@
+            <div class="modal-body">
+                <p>@Message</p>
+            </div>
+
+            @* Botones de acción (Footer) *@
+            <div class="modal-footer">
+                @switch (Type)
+                {
+                    case Category.Okay:
+                        @* Solo botón OK *@
+                        <button type="button" class="btn btn-primary" @onclick=@Ok id="Button_DialogOK">
+                            Aceptar
+                        </button>
+                        break;
+
+                    case Category.SaveNot:
+                        @* Guardar / Cancelar (Este es el que usaremos para tu Reseña) *@
+                        <button type="button" class="btn btn-primary" @onclick=@Ok id="Button_DialogSave">
+                            Confirmar
+                        </button>
+                        <button type="button" class="btn btn-secondary" @onclick="@Cancel" id="Button_DialogCancel">
+                            Cancelar
+                        </button>
+                        break;
+
+                    case Category.DeleteNot:
+                        @* Eliminar / Cancelar *@
+                        <button type="button" class="btn btn-danger" @onclick=@Ok id="Button_DialogDelete">
+                            Eliminar
+                        </button>
+                        <button type="button" class="btn btn-secondary" @onclick="@Cancel" id="Button_DialogCancel">
+                            Cancelar
+                        </button>
+                        break;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Título de la ventana
+    [Parameter] public string Caption { get; set; }
+
+    // Mensaje principal (Ej: "¿Seguro que quieres publicar?")
+    [Parameter] public string Message { get; set; }
+
+    // Evento que devuelve TRUE si se dio a Aceptar/Guardar, o FALSE si se canceló
+    [Parameter] public EventCallback<bool> OnClose { get; set; }
+
+    // Tipo de botones a mostrar
+    [Parameter] public Category Type { get; set; }
+
+    // Al cancelar, devolvemos 'false'
+    private Task Cancel()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+
+    // Al aceptar, devolvemos 'true'
+    private Task Ok()
+    {
+        return OnClose.InvokeAsync(true);
+    }
+
+    // Categorías de botones disponibles
+    public enum Category
+    {
+        Okay,       // Solo un botón de Aceptar
+        SaveNot,    // Botones de Guardar/Confirmar y Cancelar
+        DeleteNot   // Botones de Eliminar y Cancelar
+    }
+}
