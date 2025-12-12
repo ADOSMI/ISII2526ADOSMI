@@ -5,6 +5,9 @@ using AppForSEII2526.Web.Components.Account;
 using AppForSEII2526.Web.Data;
 using AppForSEII2526.Web;
 using AppForSEII2526.Web.API;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +45,8 @@ string? URI2API = "https://localhost:7067";
 builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIClient(URI2API, new HttpClient()));
 
 builder.Services.AddScoped<ComprarBonosStateContainer>();
+
+builder.Services.AddScoped<CrearReseñaStateContainer>();
 
 var app = builder.Build();
 
