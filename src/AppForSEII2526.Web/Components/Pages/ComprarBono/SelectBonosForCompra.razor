@@ -1,0 +1,146 @@
+﻿@page "/comprarbono/selectbonosforcompra"
+
+@using AppForSEII2526.Web.API
+@inject ComprarBonosStateContainer estado
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<SelectBonosForCompra> logger
+@inject ComprarBonosStateContainer compraBonoState
+@inject NavigationManager navigation
+
+<h3>Select Bonos For Compra</h3>
+<div class="container-fluid">
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @errors</p>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Nombre</span>
+                        <input type="text" id="inputNombre" @bind=nombreBono class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Tipo Bocadillo</span>
+                        <input type="text" id="inputTipoBocadillo" @bind=tipoBocadillo class="form-control" placeholder="Tipo Bocadillo" aria-label="Tipo Bocadillo" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" @onclick=@SearchBonos id="searchBonos">Buscar bonos</button>
+                </div>
+            </div>
+            <div class="row">
+                @if (bonos == null)
+                {
+                    <p>Loading bonos....</p>
+                }
+                else
+                {
+                    <div class="mh-100 table-responsive">
+                        <table class="table table-condensed table-hover" id="TableOfBonos">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Numero de bocadillos</th>
+                                    <th>Tipo Bocadillo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var bono in bonos)
+                                {
+                                    <tr id="BonoData_@bono.Nombre">
+                                        <td>@bono.Nombre</td>
+                                        <td>@bono.Precio</td>
+                                        <td>@bono.NumeroBocadillos</td>
+                                        <td>@bono.TipoBocadillo</td>
+                                        <td>
+                                            <button class="btn btn-outline-secondary" id="bonoToBuy_@bono.Nombre" @onclick="@(() => AddBono(bono))">Add</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                }
+            </div>
+        </div>
+        <div class="col-2" hidden="@hideBuyCart">
+            <div class="row">
+                <h3>Shopping Cart</h3>
+            </div>
+            @foreach (BonosItemDTO item in compraBono.ItemsCompraBono)
+            {
+                <div class="row">
+                    <button type="button" class="btn btn-light" id="removeBono_@item.Nombre" @onclick="@(() => RemoveCompraBonoItem(item))">x @item.Nombre - @item.PrecioPorBono€</button>
+                </div>
+            }
+            <div class="row">
+                <button type="button" class="btn btn-primary" id="purchaseBonoButton" @onclick=@ComprarBonos>Comprar bonos</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+@code {
+    private bool hideBuyCart { get { return compraBono.ItemsCompraBono.Count == 0; } }
+    private ICollection<BonosForCompraDTO> bonos;
+    private bool hideErrors { get { return errors.Length == 0; } }
+    private string errors = "";
+    private string nombreBono { get; set; }
+    private string tipoBocadillo { get; set; }
+    private string mensajeError = "";
+
+    private BonosForCreateDTO compraBono => compraBonoState.CompraBono;
+
+    private bool hiddenRentingCart = true;
+
+    private void AddBono(BonosForCompraDTO bono)
+    {
+        compraBonoState.AddBonoCompra(bono);
+    }
+
+    private void RemoveCompraBonoItem(BonosItemDTO item)
+    {
+        compraBonoState.RemoveBonoCompra(item.Id);
+        if (compraBono.ItemsCompraBono.Count == 0) hiddenRentingCart = true;
+    }
+
+
+    public async void SearchBonos()
+    {
+        try
+        {
+            bonos = await apiclient.GetBonosForCompraAsync(nombreBono,tipoBocadillo);
+            errors = "";
+
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError($"{DateTime.Now} Error: {ex}");
+            errors = "Error while connecting to the system";
+        }
+        if (bonos == null)
+        {
+            mensajeError = "No se puede conectar con la API.";
+        }
+        logger.LogError("Número de bonos: " + bonos.Count());
+
+        StateHasChanged();
+    }
+
+    private void ComprarBonos()
+    {
+        navigation.NavigateTo("/comprarbono/crearcomprabono");
+    }
+    
+}
