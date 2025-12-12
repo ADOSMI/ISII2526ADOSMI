@@ -3,6 +3,7 @@ using AppForSEII2526.API.DTOs.BonosDTOs;
 using AppForSEII2526.API.DTOs.CompraBonosDTOs;
 using AppForSEII2526.API.Models;
 using AppForSEII2526.UT;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ using NuGet.ContentModel;
 using System;
 using System.Linq.Expressions;
 using System.Net.WebSockets;
+using System.Security.Claims;
 
 namespace AppForSEII2526.UT.CompraBonosController_test
 {
@@ -59,18 +61,18 @@ namespace AppForSEII2526.UT.CompraBonosController_test
         public static IEnumerable<object[]> TestCasesPara_CrearCompraBono()
         {
             //SIN BONOS ELEGIDOS
-            BonosForCreateDTO comprarNoItemCompra = new BonosForCreateDTO(null, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
+            BonosForCreateDTO comprarNoItemCompra = new BonosForCreateDTO("Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
 
             //BONO QUE NO EXISTE
-            BonosForCreateDTO comprarBonoNoExiste = new BonosForCreateDTO(null, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
+            BonosForCreateDTO comprarBonoNoExiste = new BonosForCreateDTO("Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
             comprarBonoNoExiste.ItemsCompraBono.Add(new BonosItemDTO(0, 5, 5, "Bono15", "Submarino", 10));
 
             //CANTIDAD DEMASIADO ALTA (NO HAY SUFICIENTE STOCK DISPONIBLE DE ESE BONO)
-            BonosForCreateDTO comprarCantidadMuyAlta = new BonosForCreateDTO(null, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
+            BonosForCreateDTO comprarCantidadMuyAlta = new BonosForCreateDTO("Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
             comprarCantidadMuyAlta.ItemsCompraBono.Add(new BonosItemDTO(1, 2, 2, "Bono1", "Completo", 10000));
 
             //CANTIDAD DEMASIADO ALTA (NO HAY SUFICIENTE STOCK DISPONIBLE DE ESE BONO)
-            BonosForCreateDTO comprarBonoPrecioMenor3 = new BonosForCreateDTO(null, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
+            BonosForCreateDTO comprarBonoPrecioMenor3 = new BonosForCreateDTO("Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
             comprarBonoPrecioMenor3.ItemsCompraBono.Add(new BonosItemDTO(3, 2, 3, "Bono3", "Completo", 1));
 
 
@@ -100,6 +102,16 @@ namespace AppForSEII2526.UT.CompraBonosController_test
 
             var controller = new CompraBonosController(_context, logger);
 
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
+
             // Act
             var result = await controller.CrearCompra(compraBonoForCreate);
 
@@ -122,7 +134,7 @@ namespace AppForSEII2526.UT.CompraBonosController_test
             var mock = new Mock<ILogger<CompraBonosController>>();
             ILogger<CompraBonosController> logger = mock.Object;
 
-            BonosForCreateDTO compraBonosForCreate = new BonosForCreateDTO(null, "Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
+            BonosForCreateDTO compraBonosForCreate = new BonosForCreateDTO("Adolfo", "Escribano", "Martinez", EnumMetodosPago.PayPal, new List<BonosItemDTO>());
             compraBonosForCreate.ItemsCompraBono.Add(new BonosItemDTO(1, 4, 2, "Bono1", "Completo", 1));
 
             //we expected to have a new purchase in the database
@@ -131,6 +143,15 @@ namespace AppForSEII2526.UT.CompraBonosController_test
 
             var controller = new CompraBonosController(_context, logger);
 
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
 
             // Act
             var result = await controller.CrearCompra(compraBonosForCreate);

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AppForSEII2526.API.Models;
-using AppForSEII2526.API.Data;
-using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AppForSEII2526.API.Data;
 using AppForSEII2526.API.DTOs.CompraBonosDTOs;
+using AppForSEII2526.API.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Security.Claims;
 
 
 namespace AppForSEII2526.API.Controllers
@@ -77,7 +78,13 @@ namespace AppForSEII2526.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
+            var user = _context.Users.FirstOrDefault(au => au.Nombre == compraBonosParaCrear.Nombre);
+            if (user == null)
+                ModelState.AddModelError("RentalApplicationUser", "Error! UserName is not registered");
+
+
             CompraBono compraBono = new CompraBono(compraBonosParaCrear.Nombre, compraBonosParaCrear.Apellido1, compraBonosParaCrear.Apellido2, DateTime.Now, compraBonosParaCrear.MetodoPago, new List<BonosComprados>());
+
 
             //debemos comprobar que hay suficiente cantidad para comprar en la base de datos
             BonoBocadillo bonoBocadillo;
@@ -113,6 +120,19 @@ namespace AppForSEII2526.API.Controllers
                         ModelState.AddModelError("ItemsCompraBono", $"Error. Segundo apellido no puede estar vacio, introduce segundo apellido");
                     }
                 }
+
+                if (ModelState.ErrorCount == 0 && bonoBocadillo != null)
+                {
+                    var nuevoBonoComprado = new BonosComprados
+                    {
+                        BonoBocadillo = bonoBocadillo,
+                        Cantidad = item.Cantidad,
+                        PrecioBono = item.PrecioPorBono
+                    };
+
+                    compraBono.BonosComprados.Add(nuevoBonoComprado);
+                }
+                
 
             }
 

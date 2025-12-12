@@ -1089,9 +1089,6 @@
           "metodoPago": {
             "$ref": "#/components/schemas/EnumMetodosPago"
           },
-          "applicationUser": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
           "itemsCompraBono": {
             "type": "array",
             "items": {
