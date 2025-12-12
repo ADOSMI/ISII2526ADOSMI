@@ -1,8 +1,5 @@
 ﻿namespace AppForSEII2526.API.DTOs.Merch
 {
-    /// <summary>
-    /// DTO que representa un producto disponible para comprar (Paso 2 del CU).
-    /// </summary>
     public class MerchSelectDTO
     {
         public MerchSelectDTO(int id, string nombre, string tipo, double pvp, int stock)
