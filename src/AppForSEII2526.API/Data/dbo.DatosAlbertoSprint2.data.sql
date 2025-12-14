@@ -10,6 +10,7 @@ SET IDENTITY_INSERT [dbo].[Bocadillo] ON
 INSERT INTO [dbo].[Bocadillo] ([Id], [Nombre], [PVP], [Stock], [Tamano], [TipoPanId]) VALUES (4, N'Completo', 3, 9, 0, 1)
 INSERT INTO [dbo].[Bocadillo] ([Id], [Nombre], [PVP], [Stock], [Tamano], [TipoPanId]) VALUES (6, N'Bacon', 4, 11, 1, 2)
 INSERT INTO [dbo].[Bocadillo] ([Id], [Nombre], [PVP], [Stock], [Tamano], [TipoPanId]) VALUES (7, N'Vegetal', 3.5, 13, 0, 2)
+INSERT INTO [dbo].[Bocadillo] ([Id], [Nombre], [PVP], [Stock], [Tamano], [TipoPanId]) VALUES (8, N'Pollo', 5, 13, 0, 1)
 SET IDENTITY_INSERT [dbo].[Bocadillo] OFF
 
 SET IDENTITY_INSERT [dbo].[Compra] ON

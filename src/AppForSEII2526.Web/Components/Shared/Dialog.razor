@@ -1,5 +1,6 @@
 ﻿@namespace AppForSEII2526.Web.Components.Shared
 
+
 <div class="modal fade show" id="DialogOKSaveDelete" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -9,6 +10,7 @@
                 <h4 class="modal-title">@Caption</h4>
                 <button type="button" class="close btn-close" aria-label="Close"
                         @onclick="@Cancel">
+                    &times;
                 </button>
             </div>
 
@@ -86,3 +88,5 @@
         DeleteNot   // Botones de Eliminar y Cancelar
     }
 }
+
+

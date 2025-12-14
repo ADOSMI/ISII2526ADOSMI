@@ -124,6 +124,7 @@ namespace AppForSEII2526.API.Controllers
                     {
                         //we decrease the number of movies available
                         bocadillo.Stock -= item.Cantidad;
+                        compra.PrecioTotal += item.PrecioUnitario * item.Cantidad;
                         compra.CompraBocadillo.Add(new CompraBocadillo(bocadillo, item.Cantidad, compra));
                     }
                 }
@@ -136,7 +137,7 @@ namespace AppForSEII2526.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            compra.PrecioTotal = compra.CompraBocadillo.Sum(cb => cb.Cantidad * cb.Precio);
+            //compra.PrecioTotal += compra.CompraBocadillo.Sum(cb => cb.Cantidad * cb.Precio);
 
             _context.Add(compra);
 
