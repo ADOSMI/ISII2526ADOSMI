@@ -20,7 +20,7 @@ namespace AppForSEII2526.API.DTOs.ReseñaDTOs
         }
 
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "La descripción es obligatoria")] // <--- CAMBIO AQUÍ
         [StringLength(250, ErrorMessage = "La descripción no puede ocupar más de 250 caracteres")]
         public string Descripcion { get; set; }
 
@@ -28,7 +28,7 @@ namespace AppForSEII2526.API.DTOs.ReseñaDTOs
         [StringLength(50, ErrorMessage = "El nombre de usuario no puede ocupar más de 50 caracteres")]
         public string? NombreUsuario { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El título es obligatorio")] 
         [StringLength(50, ErrorMessage = "El título no puede ocupar más de 50 caracteres")]
         public string Titulo { get; set; }
 
