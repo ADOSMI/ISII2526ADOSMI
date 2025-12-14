@@ -2,7 +2,7 @@
 
 @using Microsoft.AspNetCore.Authorization
 @using AppForSEII2526.Web.API
-@* Asegúrate de tener el using correcto para ReseñaItemDTO *@
+
 
 @inject AppForSEII2526APIClient apiclient
 @inject ILogger<SelectBocadilloForReseña> logger
@@ -13,20 +13,20 @@
 <h3>Crear Reseña: Seleccionar Bocadillos</h3>
 
 <div class="container-fluid">
-    @* ZONA DE ERRORES (Copiado del modelo) *@
+    @* ZONA DE ERRORES*@
     <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
         <p id="ErrorsShown">Errors: @errors</p>
     </div>
 
     <div class="row">
-        @* COLUMNA IZQUIERDA (8): FILTROS Y TABLA *@
+        @* COLUMNA IZQUIERDA -> FILTROS Y TABLA *@
         <div class="col-8">
             <div class="row">
                 @* Filtro Nombre *@
                 <div class="col">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre</span>
-                        @* Adaptado: binding simple, la búsqueda se hace con el botón *@
+                        
                         <input type="text" id="inputNombre" @bind="filtroNombre" class="form-control" placeholder="Nombre" aria-label="Nombre">
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                                         <td>@bocadillo.Tamano</td>
                                         <td>@bocadillo.TipoPan</td>
                                         <td>
-                                            @* CAMBIO CLAVE: Botón ADD en vez de Checkbox, igual que el modelo *@
+                                            
                                             <button class="btn btn-outline-secondary" id="bocadilloToAdd_@bocadillo.Nombre"
                                                     @onclick="@(() => AddBocadillo(bocadillo))">
                                                 Añadir
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        @* COLUMNA DERECHA (2): CARRITO DE SELECCIONADOS *@
+        @* COLUMNA DERECHA: CARRITO DE SELECCIONADOS *@
         <div class="col-2" hidden="@hideReviewCart">
             <div class="row">
                 <h3>Seleccionados</h3>
@@ -96,7 +96,7 @@
             @foreach (var item in reseñaActual.ReseñaItemDTOs)
             {
                 <div class="row mb-1">
-                    @* Botón para eliminar del carrito (igual que el modelo) *@
+                    @* Botón para eliminar de carro *@
                     <button type="button" class="btn btn-light border" id="removeBocadillo_@item.Nombre"
                             @onclick="@(() => RemoveBocadilloItem(item))">
                         x @item.Nombre - @item.Pvp.ToString("C")
@@ -119,7 +119,7 @@
     private bool hideErrors { get { return errors.Length == 0; } }
     private string errors = "";
 
-    // 2. Filtros (eliminamos fechas, mantenemos los tuyos)
+    // 2. Filtros 
     private string? filtroNombre { get; set; }
     private double? filtroPvp { get; set; }
 
@@ -129,9 +129,8 @@
     // Acceso directo al DTO del estado para iterar en el carrito
     private ReseñaCreateDTO reseñaActual => estadoReseña.Reseña;
 
-    // Métodos del Modelo adaptados
 
-    // Botón "Add" de la tabla
+    // Botón "Añadir" de la tabla
     private void AddBocadillo(BocadilloForReseñaDTO bocadillo)
     {
         estadoReseña.AddBocadilloAReseña(bocadillo);
@@ -139,7 +138,7 @@
         StateHasChanged();
     }
 
-    // Botón "x" del carrito derecho
+    // Botón "x" del carrito derecho -> Quitar bocadillo
     private void RemoveBocadilloItem(ReseñaItemDTO item)
     {
         estadoReseña.RemoveBocadilloDeReseña(item);
