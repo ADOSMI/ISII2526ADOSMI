@@ -30,7 +30,7 @@ namespace AppForSEII2526.Web
             }
         }
 
-        .
+        
         public void RemoveBocadilloDeReseña(ReseñaItemDTO item)
         {
             Reseña.ReseñaItemDTOs.Remove(item);
