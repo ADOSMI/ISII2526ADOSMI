@@ -39,7 +39,7 @@
                 else
                 {
                     <div class="mh-100 table-responsive">
-                        <table class="table table-condensed table-hover" id="TableOfBonos">
+                        <table class="table table-condensed table-hover" id="TablaBonosForCompra">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -68,9 +68,9 @@
                 }
             </div>
         </div>
-        <div class="col-2" hidden="@hideBuyCart">
+        <div class="col-2">
             <div class="row">
-                <h3>Shopping Cart</h3>
+                <h3>Carrito De Compra</h3>
             </div>
             @foreach (BonosItemDTO item in compraBono.ItemsCompraBono)
             {
@@ -79,17 +79,13 @@
                 </div>
             }
             <div class="row">
-                <button type="button" class="btn btn-primary" id="purchaseBonoButton" @onclick=@ComprarBonos>Comprar bonos</button>
+                <button type="button" class="btn btn-primary" id="botonComprar" disabled="@hideBuyCart" @onclick=@ComprarBonos>Comprar bonos</button>
             </div>
         </div>
 
     </div>
 
 </div>
-
-
-
-
 
 @code {
     private bool hideBuyCart { get { return compraBono.ItemsCompraBono.Count == 0; } }
@@ -104,6 +100,13 @@
 
     private bool hiddenRentingCart = true;
 
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await SearchBonos();
+    }
+    
+
     private void AddBono(BonosForCompraDTO bono)
     {
         compraBonoState.AddBonoCompra(bono);
@@ -115,25 +118,38 @@
         if (compraBono.ItemsCompraBono.Count == 0) hiddenRentingCart = true;
     }
 
-
-    public async void SearchBonos()
+   
+    public async Task SearchBonos()
     {
         try
         {
-            bonos = await apiclient.GetBonosForCompraAsync(nombreBono,tipoBocadillo);
-            errors = "";
+            bonos = await apiclient.GetBonosForCompraAsync(nombreBono, tipoBocadillo);
+            if (bonos != null && bonos.Count == 0)
+            {
+                // Este texto debe coincidir EXACTAMENTE con el que espera tu prueba
+                errors = "No se ha encontrado ningún bono disponible.";
+            }
+            else
+            {
+                // Limpiamos el error si hay resultados
+                errors = "";
+            }
 
         }
         catch (ApiException ex)
         {
             logger.LogError($"{DateTime.Now} Error: {ex}");
             errors = "Error while connecting to the system";
+            
         }
         if (bonos == null)
         {
             mensajeError = "No se puede conectar con la API.";
         }
-        logger.LogError("Número de bonos: " + bonos.Count());
+        else
+        {
+            logger.LogError("Número de bonos: " + bonos.Count());
+        }
 
         StateHasChanged();
     }
@@ -142,5 +158,5 @@
     {
         navigation.NavigateTo("/comprarbono/crearcomprabono");
     }
-    
+
 }
