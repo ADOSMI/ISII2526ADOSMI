@@ -1,0 +1,149 @@
+﻿@page "/Reseña/DetailReseña"
+
+@using AppForSEII2526.Web.API
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+
+@inject AppForSEII2526APIClient apiclient
+
+
+
+<h3>Detalles de la Reseña</h3>
+
+@if (reseña == null)
+{
+    @* Si hay error o está cargando, mostramos el mensaje *@
+    <div class="alert alert-warning">@error</div>
+}
+else
+{
+    @* TABLA 1: DATOS GENERALES DE LA RESEÑA *@
+    <table class="table table-borderless table-sm">
+        <tr>
+            <th>Usuario</th>
+            <td id="NombreUsuario">@reseña.NombreUsuario</td>
+        </tr>
+        <tr>
+            <th>Título</th>
+            <td id="TituloReseña">@reseña.Titulo</td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td id="DescripcionReseña">@reseña.Descripcion</td>
+        </tr>
+        <tr>
+            <th>Fecha de Publicación</th>
+            <td id="FechaPublicacion">@reseña.FechaPublicacion.ToString("dd/MM/yyyy HH:mm:ss")</td>
+        </tr>
+        <tr>
+            <th>Valoración General (1-5)</th>
+            @* Mostramos el Enum tal cual *@
+            <td id="ValoracionGeneral">@reseña.Valoracion</td>
+        </tr>
+    </table>
+
+    <h4>Bocadillos Reseñados</h4>
+
+    @* TABLA 2: LISTA DE BOCADILLOS *@
+    <table class="table" id="TablaBocadillos">
+        <thead>
+            <tr>
+                <th scope="col">Bocadillo</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Tamaño</th>
+                <th scope="col">Puntuación (1-10)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in reseña.ReseñaItemDTOs)
+            {
+                <tr id="ReseñaItem_@item.Nombre">
+                    <td>@item.Nombre</td>
+                    <td>@item.Pvp.ToString("C")</td>
+                    <td>@item.Tamano</td>
+                    <td>
+                        @* Destacamos la puntuación *@
+                        <span class="badge bg-primary">@item.Puntuacion / 10</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        @* El pie de tabla (total price) se ha quitado porque el caso de uso no pide sumar precios *@
+    </table>
+}
+
+@code {
+    // Recibimos el ID por la URL (ej: /resenas/detalleResena?ReseñaID=5)
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int ReseñaID { get; set; }
+
+    private ReseñaDetailDTO reseña;
+    // Inicializamos con un mensaje de carga por defecto
+    private string error = "Cargando detalles de la reseña...";
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string userName = "";
+
+        // 1. Obtener usuario logueado
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user is not null)
+            {
+                if (user.Identity is not null && user.Identity.IsAuthenticated)
+                {
+                    userName = user.Identity.Name;
+                }
+            }
+        }
+
+        // 2. Llamada a la API
+        try
+        {
+            // Nota: Asegúrate que el método en tu cliente generado se llama así.
+            // Si tu Controller se llama GetCrearReseña, NSwag suele generar GetCrearReseñaAsync.
+            reseña = await apiclient.GetCrearReseñaAsync(ReseñaID);
+
+            // Si la API devuelve null (o 204 No Content)
+            if (reseña == null)
+            {
+                error = $"No se encontró ninguna reseña con el ID {ReseñaID}.";
+                return;
+            }
+
+            // 3. Comprobación de Seguridad (Privacidad)-----------------------------------------------------------------------------------------
+            // Solo el dueño de la reseña puede ver este detalle (según tu lógica anterior)
+            /**/
+
+            /*if (reseña.NombreUsuario != userName)
+            {
+                reseña = null; // Ocultamos los datos
+                error = "Error: No estás autorizado para ver esta reseña.";  //PREGUNTAR A NOELIA*****
+            }*/
+        }
+        catch (ApiException ex)
+        {
+            reseña = null;
+            if (ex.StatusCode == 404)
+            {
+                error = "La reseña solicitada no existe.";
+            }
+            else
+            {
+                error = $"Error al conectar con el servidor (Código: {ex.StatusCode})";
+            }
+        }
+        catch (Exception ex)
+        {
+            reseña = null;
+            error = "Ocurrió un error inesperado al cargar la reseña.";
+        }
+    }
+}

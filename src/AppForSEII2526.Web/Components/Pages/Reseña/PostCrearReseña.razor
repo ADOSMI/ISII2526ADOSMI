@@ -1,0 +1,226 @@
+﻿@page "/Reseña/PostCrearReseña"
+@using AppForSEII2526.Web.Components.Shared
+@using AppForSEII2526.Web.API
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager navigation
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<PostCrearReseña> logger
+@inject CrearReseñaStateContainer estadoReseña
+
+
+<h3>Completar Reseña</h3>
+
+@* Crear la Reseña *@
+<EditForm Model="reseña" OnValidSubmit="OpenDialog" novalidate>
+    <div class="row">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="row alert alert-danger" />
+    </div>
+
+    @* Zona de errores del servidor (Copiado del modelo) *@
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @messageError</p>
+    </div>
+
+    @* --- DATOS GENERALES DE LA RESEÑA --- *@
+    <div class="row g-3">
+
+        @* Nombre Usuario *@
+        <div class="col-md-12">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="reseña.NombreUsuario" class="form-control" id="NombreUsuario" placeholder="Nombre del usuario" />
+                <label for="NombreUsuario">Nombre de Usuario (Debe existir en la BD, ejemplo: Oscar123)</label>
+                <ValidationMessage For="@(() => reseña.NombreUsuario)" />
+            </div>
+        </div>
+
+        @*Titulo *@
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="reseña.Titulo" class="form-control" id="Titulo" placeholder="Sugerencia para..." />
+                <label for="Titulo">Título (Debe empezar por 'Sugerencia para')</label>
+                <ValidationMessage For="@(() => reseña.Titulo)" />
+            </div>
+        </div>
+
+        @* Val.General *@
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <InputSelect class="form-select" @bind-Value="reseña.Valoracion" id="Valoracion">
+                    @foreach (var val in Enum.GetValues(typeof(Valoracion_General)))
+                    {
+                        <option value="@val">@val</option>
+                    }
+                </InputSelect>
+                <label for="Valoracion">Valoración General</label>
+            </div>
+        </div>
+
+        @*Descripción *@
+        <div class="col-md-12">
+            <div class="form-floating mb-3">
+                <InputTextArea @bind-Value="reseña.Descripcion" class="form-control" id="Descripcion" style="height: 100px" />
+                <label for="Descripcion">Descripción de la reseña</label>
+                <ValidationMessage For="@(() => reseña.Descripcion)" />
+            </div>
+        </div>
+    </div>
+
+    @* BOTONES *@
+    <div class="row g-2 mb-4">
+        <div class="col-md">
+            <div class="form-floating">
+                @* Modificar selección *@
+                <button class="btn btn-outline-secondary" type="button" @onclick="ModifyBocadillosItems" id="ModifyBocadillos">
+                    Modificar bocadillos
+                </button>
+            </div>
+        </div>
+        <div class="col-md text-end">
+            <div class="form-floating">
+                @* Botón de envío que abre el diálogo *@
+                <button class="btn btn-primary" type="submit" id="Submit">
+                    Publicar Reseña
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <h4>Puntúa tus bocadillos</h4>
+
+    @*BOCADILLOS SELECCIONADOS *@
+    <div class="mh-100 table-responsive">
+        <table class="table table-condensed table-hover" id="TableOfReseñaItems">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tamaño</th>
+                    <th>Precio</th>
+                    <th style="width: 150px;">Puntuación (1-10)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in reseña.ReseñaItemDTOs)
+                {
+                    <tr id="BocadilloData_@item.Nombre">
+                        <td>@item.Nombre</td>
+                        <td>@item.Tamano</td>
+                        <td>@item.Pvp.ToString("C")</td>
+                        <td>
+                            
+                            <InputNumber @bind-Value="item.Puntuacion" class="form-control" min="1" max="10" id="@($"puntuacion_{item.Id}")" />
+                            <ValidationMessage For="@(() => item.Puntuacion)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+@* Confirmar*@
+@if (DialogIsOpen)
+{
+    <Dialog Caption="Publicar Reseña"
+            Message="¿Estás seguro de que quieres publicar esta reseña?"
+            OnClose="@OnDialogClose"
+            Type="Dialog.Category.SaveNot">
+    </Dialog>
+}
+
+@code {
+    
+    private string messageError = "";
+    private bool hideErrors { get { return messageError.Length == 0; } }
+    private bool DialogIsOpen;
+
+    
+    private ReseñaCreateDTO reseña => estadoReseña.Reseña;
+
+
+    private void ModifyBocadillosItems()
+    {
+        navigation.NavigateTo("/Reseña/SelectBocadilloForReseña");
+    }
+
+    private void OpenDialog()
+    {
+        // Validar manualmente que hay bocadillos antes de abrir.
+        if (reseña.ReseñaItemDTOs.Count == 0)
+        {
+            messageError = "Debes seleccionar al menos un bocadillo.";
+            return;
+        }
+        DialogIsOpen = true;
+    }
+
+    // Lógica al cerrar el modal (Confirmar envío)
+    private async Task OnDialogClose(bool isOk)
+    {
+        DialogIsOpen = false;
+
+        if (isOk)
+        {
+            try
+            {
+                
+                var reseñaCreada = await apiclient.CreateReseñaAsync(reseña);
+
+                estadoReseña.ReseñaProcessed();
+
+                navigation.NavigateTo($"/Reseña/DetailReseña?ReseñaID={reseñaCreada.Id}");
+            }
+            catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
+            {
+                if (apiexceptionvalidation.Result.Errors != null)
+                {
+                    messageError = "";
+                    foreach (var errors in apiexceptionvalidation.Result.Errors.Values)
+                        messageError = string.Join("(*) ", messageError, string.Join(" (*) ", errors));
+                }
+            }
+            catch (ApiException apiexception)
+            {
+                messageError = $"Error procesando la solicitud: {apiexception.Message}";
+            }
+            catch (Exception ex)
+            {
+                messageError = "Ocurrió un error inesperado. Inténtalo más tarde.";
+                logger.LogError(ex, "Error creating review");
+            }
+        }
+    }
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Verificar si hay bocatas, si no, volver al select
+        if (estadoReseña.IsEmpty())
+        {
+            navigation.NavigateTo("/Reseña/SelectBocadilloForReseña");
+            return;
+        }
+
+        
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user is not null)
+            {
+                if (user.Identity is not null && user.Identity.IsAuthenticated)
+                {
+                    reseña.NombreUsuario = user.Identity.Name;
+                }
+            }
+        }
+
+        reseña.Titulo = reseña.Titulo ?? "";
+        reseña.Descripcion = reseña.Descripcion ?? "";
+    }
+}

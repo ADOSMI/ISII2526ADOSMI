@@ -38,10 +38,6 @@ namespace AppForSEII2526.API.Controllers
 
         }
 
-
-
-        //  Mostrar detalle de producto por ID 
-
         [HttpGet("details/{id}")]
 
         [ProducesResponseType(typeof(MerchDetailsDTO), (int)HttpStatusCode.OK)]
@@ -92,9 +88,6 @@ namespace AppForSEII2526.API.Controllers
 
         }
 
-
-
-        //  Crear una compra 
 
         [HttpPost("comprar")]
 
@@ -164,10 +157,6 @@ namespace AppForSEII2526.API.Controllers
 
                 }
 
-
-
-                // Actualizar stock y calcular precio total 
-
                 producto.Stock -= item.Cantidad;
 
                 productosAActualizar.Add(producto);
@@ -185,8 +174,7 @@ namespace AppForSEII2526.API.Controllers
             _logger.LogInformation($"Compra realizada por {compraDto.Nombre} {compraDto.Apellido1}. Total: {precioTotal}€");
 
 
-
-            // Devuelve un MerchDetailsDTO del primer producto comprado como ejemplo 
+ 
 
             var primerProducto = productosAActualizar.First();
 

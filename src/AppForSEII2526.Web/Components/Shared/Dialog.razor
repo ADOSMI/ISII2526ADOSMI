@@ -1,40 +1,52 @@
-﻿
+﻿@namespace AppForSEII2526.Web.Components.Shared
+
 
 <div class="modal fade show" id="DialogOKSaveDelete" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+
+            @* Cabecera del Modal (Título y botón X) *@
             <div class="modal-header">
                 <h4 class="modal-title">@Caption</h4>
-                <button type="button" class="close"
+                <button type="button" class="close btn-close" aria-label="Close"
                         @onclick="@Cancel">
                     &times;
                 </button>
             </div>
+
+            @* Cuerpo del mensaje *@
             <div class="modal-body">
                 <p>@Message</p>
             </div>
+
+            @* Botones de acción (Footer) *@
             <div class="modal-footer">
                 @switch (Type)
                 {
                     case Category.Okay:
+                        @* Solo botón OK *@
                         <button type="button" class="btn btn-primary" @onclick=@Ok id="Button_DialogOK">
-                            OK
+                            Aceptar
                         </button>
                         break;
+
                     case Category.SaveNot:
-                        <button type="button" class="btn btn-primary" @onclick=@Ok id="Button_DialogOK">
-                            Save
+                        @* Guardar / Cancelar (Este es el que usaremos para tu Reseña) *@
+                        <button type="button" class="btn btn-primary" @onclick=@Ok id="Button_DialogSave">
+                            Confirmar
                         </button>
-                        <button type="button" class="btn btn-warning" @onclick="@Cancel" id="Button_DialogCancel">
-                            Don't Save
+                        <button type="button" class="btn btn-secondary" @onclick="@Cancel" id="Button_DialogCancel">
+                            Cancelar
                         </button>
                         break;
+
                     case Category.DeleteNot:
-                        <button type="button" class="btn btn-danger" @onclick=@Ok id="Button_DialogOK">
-                            Delete
+                        @* Eliminar / Cancelar *@
+                        <button type="button" class="btn btn-danger" @onclick=@Ok id="Button_DialogDelete">
+                            Eliminar
                         </button>
-                        <button type="button" class="btn btn-warning" @onclick="@Cancel" id="Button_DialogCancel">
-                            Don't Delete
+                        <button type="button" class="btn btn-secondary" @onclick="@Cancel" id="Button_DialogCancel">
+                            Cancelar
                         </button>
                         break;
                 }
@@ -44,33 +56,36 @@
 </div>
 
 @code {
-
-    //this parameter will be used to show a title in the modal dialog
+    // Título de la ventana
     [Parameter] public string Caption { get; set; }
 
-    //This parameter will be used to inform user about a message
+    // Mensaje principal (Ej: "¿Seguro que quieres publicar?")
     [Parameter] public string Message { get; set; }
+
+    // Evento que devuelve TRUE si se dio a Aceptar/Guardar, o FALSE si se canceló
     [Parameter] public EventCallback<bool> OnClose { get; set; }
 
-    //this parameter will help to control which type of buttons will be shown
+    // Tipo de botones a mostrar
     [Parameter] public Category Type { get; set; }
 
-    //it will return false in case user cancels the operation
+    // Al cancelar, devolvemos 'false'
     private Task Cancel()
     {
         return OnClose.InvokeAsync(false);
     }
 
-    //it will return false in case user confirms the operation
+    // Al aceptar, devolvemos 'true'
     private Task Ok()
     {
         return OnClose.InvokeAsync(true);
     }
+
+    // Categorías de botones disponibles
     public enum Category
     {
-        Okay,
-        SaveNot,
-        DeleteNot
+        Okay,       // Solo un botón de Aceptar
+        SaveNot,    // Botones de Guardar/Confirmar y Cancelar
+        DeleteNot   // Botones de Eliminar y Cancelar
     }
 }
 

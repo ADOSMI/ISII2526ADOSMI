@@ -19,12 +19,6 @@ namespace AppForSEII2526.API.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Paso 2: devuelve los productos de merchandising disponibless
-        /// Permite aplicar filtros opcionales por tipo de producto o precio máximo.
-        /// </summary>
-        /// <param name="tipo">Nombre o parte del tipo de producto (opcional)</param>
-        /// <param name="maxPrecio">Precio máximo (opcional)</param>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MerchSelectDTO>), 200)]
         [ProducesResponseType(404)]
@@ -35,14 +29,15 @@ namespace AppForSEII2526.API.Controllers
                 var query = _context.Producto
                     .Include(p => p.TipoProducto)
                     .Where(p => p.Stock > 0);
+                
 
-                // Filtrado opcional por tipo
                 if (!string.IsNullOrWhiteSpace(tipo))
                     query = query.Where(p => p.TipoProducto.Nombre.Contains(tipo));
 
-                // Filtrado opcional por precio máximo
+                
                 if (maxPrecio.HasValue)
                     query = query.Where(p => p.PVP <= maxPrecio.Value);
+                
 
                 var productos = await query
                     .OrderBy(p => p.Nombre)
@@ -55,7 +50,7 @@ namespace AppForSEII2526.API.Controllers
                     ))
                     .ToListAsync();
 
-                // Flujo alternativo: no hay resultados
+                
                 if (!productos.Any())
                 {
                     _logger.LogWarning("No hay productos disponibles o coincidentes con los filtros.");

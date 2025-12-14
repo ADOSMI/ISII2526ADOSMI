@@ -7,10 +7,8 @@ namespace AppForSEII2526.API.DTOs.CompraBonosDTOs
 {
     public class BonosForCreateDTO //que introduzca de forma obligatoria su nombre completo al que estara el bono, apellidos y metodo de pago.
     {
-        [JsonConstructor]
-        public BonosForCreateDTO(ApplicationUser applicationUser,string nombre, string apellido1, string apellido2, EnumMetodosPago metodoPago, IList<BonosItemDTO> itemsCompraBono)
+        public BonosForCreateDTO(string nombre, string apellido1, string apellido2, EnumMetodosPago metodoPago, IList<BonosItemDTO> itemsCompraBono)
         {
-            ApplicationUser = applicationUser;
             Nombre = nombre;
             Apellido1 = apellido1;
             Apellido2 = apellido2;
@@ -18,7 +16,7 @@ namespace AppForSEII2526.API.DTOs.CompraBonosDTOs
             ItemsCompraBono = itemsCompraBono ?? new List<BonosItemDTO>(); ;
         }
 
-        [Obsolete("Constructor requerido por System.Text.Json", true)]
+        
         public BonosForCreateDTO() { }
 
 
@@ -46,8 +44,6 @@ namespace AppForSEII2526.API.DTOs.CompraBonosDTOs
         [Display(Name = "Método de pago")]
         [Required(ErrorMessage = "Elija un método de pago")]
         public EnumMetodosPago MetodoPago { get; set; }
-
-        public ApplicationUser ApplicationUser { get; set; }
 
         public IList<BonosItemDTO> ItemsCompraBono { get; set; }
 

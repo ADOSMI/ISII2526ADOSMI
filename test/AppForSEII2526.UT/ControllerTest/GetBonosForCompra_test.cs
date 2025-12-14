@@ -43,10 +43,10 @@ namespace AppForSEII2526.UT.ControllerTest
 
             var bonosDTOs = new List<BonosForCompraDTO>() {
 
-                new BonosForCompraDTO("Bono1",2,2,"Completo"),
-                new BonosForCompraDTO("Bono2",3,3,"Serrano"),
-                new BonosForCompraDTO("Bono3",3,3,"Serrano"),
-                new BonosForCompraDTO("Bono3",4,4,"Politecnico")
+                new BonosForCompraDTO(1,"Bono1",2,2,"Completo"),
+                new BonosForCompraDTO(2,"Bono2",3,3,"Serrano"),
+                new BonosForCompraDTO(3,"Bono3",3,3,"Serrano"),
+                new BonosForCompraDTO(4,"Bono3",4,4,"Politecnico")
             };
 
             var bonosDTOsTC1 = new List<BonosForCompraDTO>() { bonosDTOs[0], bonosDTOs[1], bonosDTOs[2], bonosDTOs[3], };

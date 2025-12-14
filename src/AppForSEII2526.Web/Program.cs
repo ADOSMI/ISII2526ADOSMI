@@ -3,9 +3,12 @@ using AppForSEII2526.Web.API;
 using AppForSEII2526.Web.Components;
 using AppForSEII2526.Web.Components.Account;
 using AppForSEII2526.Web.Data;
+using AppForSEII2526.Web;
+using AppForSEII2526.Web.API;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,27 +40,14 @@ builder.Services.AddIdentityCore<AppForSEII2526.Web.Data.ApplicationUser>(option
 
 builder.Services.AddSingleton<IEmailSender<AppForSEII2526.Web.Data.ApplicationUser>, IdentityNoOpEmailSender>();
 
-//this variable obtains the url where the API has been deployed
-
-
-
 string? URI2API = "https://localhost:7067";
 
+builder.Services.AddScoped<AppForSEII2526APIClient>(sp => new AppForSEII2526APIClient(URI2API, new HttpClient()));
 
+builder.Services.AddScoped<ComprarBonosStateContainer>();
 
-
-
-//We create the service for accessing the API from where .WEB project
-
-
-builder.Services.AddScoped<AppForSEII2526APIClient>(sp =>
-{
-    var httpClient = new HttpClient();
-    // Es crucial asignar esto para evitar el error "BaseAddress must be set"
-    httpClient.BaseAddress = new Uri(URI2API);
-
-    return new AppForSEII2526APIClient(URI2API, httpClient);
-});
+builder.Services.AddScoped<CrearReseñaStateContainer>();
+    
 builder.Services.AddScoped < CompraStateContainer > ();
 
 var app = builder.Build();
