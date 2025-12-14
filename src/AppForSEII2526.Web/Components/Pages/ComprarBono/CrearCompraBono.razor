@@ -23,18 +23,21 @@
             <div class="form-floating mb-3">
                 <InputText @bind-Value="compraBono.Nombre" class="form-control" id="Nombre" />
                 <label for="Nombre">Nombre </label>
+                <ValidationMessage For="@(() => compraBono.Nombre)" />
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
                 <InputText @bind-Value="compraBono.Apellido1" class="form-control" id="Primer Apellido" />
                 <label for="Primer Apellido">Primer Apellido </label>
+                <ValidationMessage For="@(() => compraBono.Apellido1)" />
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating mb-3">
                 <InputText @bind-Value="compraBono.Apellido2" class="form-control" id="Segundo Apellido" />
                 <label for="Segundo Apellido">Segundo Apellido </label>
+                <ValidationMessage For="@(() => compraBono.Apellido2)" />
             </div>
         </div>
         <div class="col-md">
@@ -47,6 +50,7 @@
                     }
                 </InputSelect>
                 <label for="MetodoPago">Método de Pago</label>
+                <ValidationMessage For="@(() => compraBono.MetodoPago)" />
             </div>
         </div>
         <div class="col-md">
@@ -60,8 +64,9 @@
     </div>
     <h4>Compra Bono detail</h4>
     <p>
-        <b>Total price:</b> @TotalCost €
-        <button class="btn btn-outline-primary" type="submit" @onclick="ModifyCompraBonos" id="ModifyCompraBonos">
+        <b>Total price:</b> <span id="precioTotal">@TotalCost</span> €
+
+        <button class="btn btn-outline-primary" type="button" @onclick="ModifyCompraBonos" id="botonVolver">
             Modifica tus bonos
         </button>
     </p>
@@ -94,9 +99,9 @@
 @if (DialogIsOpen)
 {
     <Dialog Caption="Compra Bonos"
-    Message="Do you want to proceed to buy the selected bonos?"
-    OnClose="@OnDialogClose"
-    Type=Dialog.Category.SaveNot>
+            Message="Do you want to proceed to buy the selected bonos?"
+            OnClose="@OnDialogClose"
+            Type=Dialog.Category.SaveNot>
     </Dialog>
 }
 

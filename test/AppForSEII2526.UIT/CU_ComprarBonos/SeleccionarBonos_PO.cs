@@ -62,13 +62,20 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
 
         // Selecciona los videojuegos cuyos Ids aparecen en la lista.
 
-        public void SeleccionarBonos(List<string> bonosIds)
+        public void SeleccionarBonos(List<string> nombresBonos)
         {
             //we wait for till the movies are available to be selected 
-            foreach (var bonoId in bonosIds)
+            foreach (var nombre in nombresBonos)
             {
-                WaitForBeingVisible(By.Id($"bonoCompra_{bonoId}"));
-                _driver.FindElement(By.Id($"bonoCompra_{bonoId}")).Click();
+                // Buscamos por el ID correcto definido en el Razor
+                var idBoton = $"bonoToBuy_{nombre}";
+                var selector = By.Id(idBoton);
+
+                WaitForBeingVisible(selector);
+                _driver.FindElement(selector).Click();
+
+                // Pequeña espera para que Blazor procese el clic y actualice el carrito
+                System.Threading.Thread.Sleep(500);
             }
         }
 
@@ -95,11 +102,32 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
         }
 
         //Metodo para deseleccionar bono
-        public void DeseleccionarBono(string bonoId)
+        public void DeseleccionarBono(string nombreBono)
         {
-            var selector = By.Id($"bonoCompra_{bonoId}");
+            var idBotonEliminar = $"removeBono_{nombreBono}";
+            var selector = By.Id(idBotonEliminar);
+
             WaitForBeingVisible(selector);
             _driver.FindElement(selector).Click();
+
+            System.Threading.Thread.Sleep(500);
+        }
+
+        public bool EstaEnElCarrito(string nombreBono)
+        {
+            // El ID del botón de borrar en el carrito es "removeBono_NOMBRE"
+            var idBoton = $"removeBono_{nombreBono}";
+
+            try
+            {
+                // Intentamos encontrar el botón X del carrito
+                _driver.FindElement(By.Id(idBoton));
+                return true; // Si lo encuentra, es que el bono está en el carrito
+            }
+            catch (OpenQA.Selenium.NoSuchElementException)
+            {
+                return false; // Si no lo encuentra, es que no está
+            }
         }
     }
 }
