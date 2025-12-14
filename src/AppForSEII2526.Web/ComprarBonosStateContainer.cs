@@ -22,21 +22,18 @@ namespace AppForSEII2526.Web
 
         public void AddBonoCompra(BonosForCompraDTO bonos)
         {
-            if(!CompraBono.ItemsCompraBono.Any(cb => cb.Id == bonos.Id))
-            {
-                // Si pides directamente en la interfaz de usuario la cantidad, el último párametro en vez de ser 1 sería la propia cantidad.
-                CompraBono.ItemsCompraBono.Add(new BonosItemDTO()
+            // Si pides directamente en la interfaz de usuario la cantidad, el último párametro en vez de ser 1 sería la propia cantidad.
+            CompraBono.ItemsCompraBono.Add(new BonosItemDTO()
                 {
-                    Id = bonos.Id,
-                    PrecioPorBono = bonos.Precio,
-                    NumeroBocadillos = bonos.NumeroBocadillos,
-                    Nombre = bonos.Nombre,
-                    TipoBocadillo = bonos.TipoBocadillo,
-                    Cantidad = 1,
-                }
-                );
-
+                Id = bonos.Id,
+                PrecioPorBono = bonos.Precio,
+                NumeroBocadillos = bonos.NumeroBocadillos,
+                Nombre = bonos.Nombre,
+                TipoBocadillo = bonos.TipoBocadillo,
+                Cantidad = 1,
             }
+            );
+
         }
 
         // Se elimina un elemento del carrito de la compra.
