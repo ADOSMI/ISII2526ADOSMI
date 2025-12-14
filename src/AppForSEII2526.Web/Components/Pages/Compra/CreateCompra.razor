@@ -1,0 +1,168 @@
+﻿@page "/compra/createcompra"
+
+@using AppForSEII2526.Web.API
+@using AppForSEII2526.Web.Components.Shared
+@inject AppForSEII2526APIClient apiclient
+@inject ILogger<CreateCompra> logger
+@inject CompraStateContainer compraState
+@inject NavigationManager navigation
+
+<h3>CreateCompra</h3>
+
+<EditForm Model="compra" OnValidSubmit="OpenDialog">
+    <div class="row">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </div>
+    <div class="row alert alert-danger" role="alert" hidden="@hideErrors">
+        <p id="ErrorsShown">Errors: @messageError</p>
+    </div>
+    <div class="row g-3">
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.NombreCliente" class="form-control" id="Name" />
+                <label for="Name">Nombre </label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.Apellido1Cliente" class="form-control" id="Surname1" />
+                <label for="Name">Primer Apellido </label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="compra.Apellido2Cliente" class="form-control" id="Surname2" />
+                <label for="Name">Segundo Apellido </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="form-floating">
+            @*this button will be used to ask the user if he want to proceed to rent the movies*@
+            <button class="btn btn-primary" type="submit" id="Enviar">
+                Compra tus bocadillos
+            </button>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating">
+                @*a dropdown for selecting the payment method*@
+                <InputSelect class="form-select" @bind-Value="@compra.EnumeracionMetodosPago" id="MetodoPago">
+                    <option value="@EnumMetodosPago.Tarjeta" default>Tarjeta </option>
+                    <option value="@EnumMetodosPago.GPay">GPay </option>
+                    <option value="@EnumMetodosPago.PayPal">PayPal </option>
+                </InputSelect>
+                <label for="PaymentMethod">Payment Method</label>
+            </div>
+        </div>
+    </div>
+
+    <h4>Rental detail</h4>
+    <p>
+        <b>Total price:</b> @TotalCost €
+        <button class="btn btn-outline-primary" type="submit" @onclick="ModifyRentalItems" id="ModifyMovies">
+            Modificar bocadillos
+        </button>
+    </p>
+
+    <div class="mh-100 table-responsive">
+        <table class="table table-condensed table-hover" id="TableOfRentalItems">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo de pan</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in compra.CompraItems)
+                {
+                    <tr id="BocadilloData_@item.Nombre">
+                        <td>@item.Nombre</td>
+                        <td>@item.TipoPan</td>
+                        <td>@item.PrecioUnitario</td>
+                        <td>
+                            <input type="number" min="1" @bind="item.Cantidad" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</EditForm>
+
+@if (DialogIsOpen)
+{
+    <Dialog Caption="Compra bocadillos"
+            Message="¿Quieres comprar los bocadillos seleccionados?"
+            OnClose="@OnDialogClose"
+            Type=Dialog.Category.SaveNot>
+    </Dialog>
+}
+
+@code {
+    private string messageError = "";
+    private bool hideErrors { get { return messageError.Length == 0; } }
+    private bool DialogIsOpen;
+
+    private decimal TotalCost
+    {
+        get
+        {
+            double price = compra.CompraItems.Sum(ci => ci.PrecioUnitario * ci.Cantidad);
+            return Convert.ToDecimal(price);
+        }
+    }
+
+    private void ModifyRentalItems()
+    {
+        navigation.NavigateTo("/compra/selectbocadillosforcompra");
+    }
+    private CompraForCreateDTO compra => compraState.Compra;
+
+    private void OpenDialog()
+    {
+
+        DialogIsOpen = true;
+    }
+
+    private async Task OnDialogClose(bool isOk)
+    {
+
+        DialogIsOpen = false;
+        if (isOk)
+        {
+            try
+            {
+                var comprados = await apiclient.CreateCompraAsync(compra);
+                compraState.CompraProcessed();
+                navigation.NavigateTo($"/compra/detailcompra?CompraID={comprados.Id}");
+            }
+            catch (ApiException<ValidationProblemDetails> apiexceptionvalidation)
+            {
+
+                if (apiexceptionvalidation.Result.Errors.Values != null)
+                {
+                    messageError = "";
+                    foreach (var errors in apiexceptionvalidation.Result.Errors.Values)
+                        //https://learn.microsoft.com/en-us/dotnet/api/system.string.join?view=net-7.0
+                        messageError = string.Join("(*) ", messageError, string.Join(" (*) ", errors));
+                }
+            }
+            catch (ApiException apiexception)
+            {
+                //we need to inform user that there was some other error while processing the request
+                messageError = "Error while processing your request, please try again later!";
+
+            }
+        }
+
+    }
+
+}
+
+}
+
