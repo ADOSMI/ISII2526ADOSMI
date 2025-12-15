@@ -120,6 +120,9 @@ namespace AppForSEII2526.API.Controllers
                     {
                         ModelState.AddModelError("CompraItems", $"Error, {bocadillo.Nombre} solo tiene {bocadillo.Stock} unidades disponibles pero {item.Cantidad} fueron seleccionadas");
                     }
+                    if (item.Cantidad > 5) {
+                        ModelState.AddModelError("CompraItems", $"Error!, no nos quedan panes para realizar tu pedido");
+                    }
                     else
                     {
                         //we decrease the number of movies available
