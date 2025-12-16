@@ -72,6 +72,11 @@ namespace AppForSEII2526.UT.ComprasControllerTest
                 compraItemsStockSuperior);
 
 
+            var compraItemsStockSuperiorA5 = new List<CompraItemDTO>() { new CompraItemDTO(2, "Bocadillo vegetal", 4.99, "Vegano", 6) };
+            var rentalItemStockSuperiorA5 = new CompraForCreateDTO("Alberto", "Cuenca",
+                "Aleman", AppForSEII2526.API.Models.EnumMetodosPago.Tarjeta,
+                compraItemsStockSuperiorA5);
+
 
 
             var allTests = new List<object[]>
@@ -79,7 +84,8 @@ namespace AppForSEII2526.UT.ComprasControllerTest
                 new object[] { rentalItemVacio, "Error. Tienes que añadir al menos un bocadillo para realizar la compra"},
                 new object[] { compraNoApplicationUser, "Error! UserName is not registered"},
                 new object[] { rentalItemIdNoexiste, "Error, el bocadillo con ID 111 no existe"},
-                new object[] { rentalItemIdStockSuperior, "Error, Bocadillo vegetal solo tiene 20 unidades disponibles pero 200 fueron seleccionadas" }
+                new object[] { rentalItemIdStockSuperior, "Error, Bocadillo vegetal solo tiene 20 unidades disponibles pero 200 fueron seleccionadas" },
+                new object[] { rentalItemStockSuperiorA5, "Error!, no nos quedan panes para realizar tu pedido" }
             };
 
             return allTests;
