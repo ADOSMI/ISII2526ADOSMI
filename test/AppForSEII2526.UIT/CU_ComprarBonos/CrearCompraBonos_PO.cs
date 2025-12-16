@@ -14,14 +14,14 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
         private By _botonModificarBonosBy = By.Id("botonVolver");
         private By _seleccionarMetodoPagoBy = By.Id("MetodoPago");
         private By _precioTotalBy = By.Id("precioTotal");
-        private By _tablaBonosForCompraBy = By.Id("TablaBonosForCompra");
+        
 
         private By _nombreBy = By.Id("Nombre");
         private By _primerApellidoBy = By.Id("Primer Apellido");
         private By _segundoApellidoBy = By.Id("Segundo Apellido");
         private By _erroresBy = By.CssSelector(".validation-message, .validation-errors, ul.validation-errors li");
 
-
+        private By _botonConfirmarModalBy = By.XPath("//button[contains(text(), 'Confirmar')]");
 
         private IWebElement _botonComprar() => _driver.FindElement(_botonComprarBy);
         private IWebElement _botonModificarBonos() => _driver.FindElement(_botonModificarBonosBy);
@@ -44,11 +44,29 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
         // Pulsar el botón comprar.
         public void Comprar()
         {
+            WaitForBeingClickable(_botonComprarBy);
             _botonComprar().Click();
-            System.Threading.Thread.Sleep(200);
+            
         }
 
-        // Método para obtener el precio total (Necesario para el test UC3_5)
+        public void ConfirmarPedido()
+        {
+            
+            WaitForBeingVisible(_botonConfirmarModalBy);
+            WaitForBeingClickable(_botonConfirmarModalBy); try
+            {
+                _driver.FindElement(_botonConfirmarModalBy).Click();
+            }
+            catch (StaleElementReferenceException)
+            {
+                
+                _driver.FindElement(_botonConfirmarModalBy).Click();
+            }
+
+            System.Threading.Thread.Sleep(2000);
+        }
+
+        
         public string ObtenerPrecioTotal()
         {
             WaitForBeingVisible(_precioTotalBy);
@@ -56,14 +74,14 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
         }
 
 
-        // Hay un problema, no salta el evento onChange por lo que no se actualiza correctamente el contenedor del estado.
+        
         public void setMetodoPago(string metodoPago)
         {
             WaitForBeingClickable(_seleccionarMetodoPagoBy);
-            // Se crea la lista desplegable.
             SelectElement selectElement = new SelectElement(_metodoPago());
-            // Selecciona la opción que se ha indicado en el parámetro.
             selectElement.SelectByText(metodoPago);
+
+            _metodoPago().SendKeys(Keys.Tab);
         }
         public void setDatos(string nombre, string primerApellido, string segundoApellido, string metodoPago)
         {
@@ -82,7 +100,7 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
 
         }
 
-        // Método para verificar errores de validación (Necesario para UC3_6)
+        
         public bool ExisteMensajeError()
         {
             try
@@ -113,10 +131,8 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
         // Devuelve si el botón Comprar está activo o no.
         public bool isEnabledComprar()
         {
-            WaitForBeingVisible(By.Id("botonComprar"));
-            IWebElement botonComprar = _botonComprar();
-
-            return botonComprar.Enabled;
+            WaitForBeingVisible(_botonComprarBy);
+            return _botonComprar().Enabled;
         }
     }
 }
