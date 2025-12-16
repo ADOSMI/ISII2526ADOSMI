@@ -1,4 +1,5 @@
 ﻿using AppForMovies.UIT.Shared;
+using AppForSEII2526.UIT.CU_PedirBocadillos;
 using AppForSEII2526.UIT.Shared;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System;
@@ -13,6 +14,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
     {
         private SelectBocadillosForCompra_PO selectBocadillosForCompra_PO;
         private CreateCompra_PO createCompra_PO;
+        private DetailCompraBocadillo_PO detailCompraBocadillo_PO;
 
         private const int bocadilloId1 = 1;
         private const string bocadilloNombre1 = "Bacon";
@@ -32,6 +34,8 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
         {
             selectBocadillosForCompra_PO = new SelectBocadillosForCompra_PO(_driver, _output);
             createCompra_PO = new CreateCompra_PO(_driver, _output);
+            detailCompraBocadillo_PO = new DetailCompraBocadillo_PO(_driver, _output);
+
         }
 
         private void InitialStepsForCompraBocadillos()
@@ -114,6 +118,32 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 
             Assert.True(createCompra_PO.CheckMessageError(mensajeError));
             Assert.Contains("createcompra", _driver.Url);
+        }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void UC1_BasicFlow_RealizarPedido_Success()
+        {
+            InitialStepsForCompraBocadillos();
+            selectBocadillosForCompra_PO.AddBocadilloToComprarCart(bocadilloNombre1);
+            selectBocadillosForCompra_PO.Comprar();
+
+            // Rellenar datos
+            createCompra_PO.RellenarDatosCliente(clienteNombre, clienteApellido1, clienteApellido2, metodoPagoTarjeta);
+            createCompra_PO.SeleccionarBocadilloCantidad(bocadilloNombre1, 2);
+
+            // Guardar y Confirmar Modal
+            createCompra_PO.ClickGuardar();
+            detailCompraBocadillo_PO.WaitForDetailsPage();º
+
+            // Verificamos URL
+            Assert.Contains("detailcompra", _driver.Url);
+
+            
+            // Verificamos que el producto comprado
+            var expectedItems = new List<string[]> {
+                new string[] { bocadilloNombre1, bocadilloTipoPan1, "2" }
+            };
         }
 
     }
