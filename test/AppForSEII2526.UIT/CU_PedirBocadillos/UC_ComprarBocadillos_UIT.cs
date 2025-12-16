@@ -134,7 +134,7 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 
             // Guardar y Confirmar Modal
             createCompra_PO.ClickGuardar();
-            detailCompraBocadillo_PO.WaitForDetailsPage();º
+            detailCompraBocadillo_PO.WaitForDetailsPage();
 
             // Verificamos URL
             Assert.Contains("detailcompra", _driver.Url);
