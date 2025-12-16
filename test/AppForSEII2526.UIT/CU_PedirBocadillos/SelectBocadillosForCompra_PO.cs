@@ -56,9 +56,12 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             _driver.FindElement(By.Id("removeBocadillo_" + bocadilloNombre)).Click();
         }
 
+        public void Comprar() {
+            _driver.FindElement(buttonComprarBocadillos).Click();
+        }
+
         public bool CompraNoDisponible()
         {
-            //the button is not Displayed=hidden
 
             return _driver.FindElement(buttonComprarBocadillos).Displayed == false;
         }

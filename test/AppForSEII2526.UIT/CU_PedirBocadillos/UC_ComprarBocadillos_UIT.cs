@@ -12,6 +12,8 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
     public class UC_ComprarBocadillos_UIT : UC_UIT
     {
         private SelectBocadillosForCompra_PO selectBocadillosForCompra_PO;
+        private CreateCompra_PO createCompra_PO;
+
         private const int bocadilloId1 = 1;
         private const string bocadilloNombre1 = "Bacon";
         private const string bocadilloTipoPan1 = "Sin gluten";
@@ -21,11 +23,15 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
         private const string bocadilloTipoPan2 = "Semillas";
         private const string bocadilloTamano2 = "Grande";
 
-
+        private const string clienteNombre = "Alberto";
+        private const string clienteApellido1 = "Cuenca";
+        private const string clienteApellido2 = "Alemán";
+        private const string metodoPagoTarjeta = "Tarjeta";
 
         public UC_ComprarBocadillos_UIT(ITestOutputHelper output) : base(output)
         {
             selectBocadillosForCompra_PO = new SelectBocadillosForCompra_PO(_driver, _output);
+            createCompra_PO = new CreateCompra_PO(_driver, _output);
         }
 
         private void InitialStepsForCompraBocadillos()
@@ -73,6 +79,41 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
 
             Assert.True(selectBocadillosForCompra_PO.CompraNoDisponible());
 
+        }
+        
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void UC1_AF2_Modificar_Carrito()
+        {
+            InitialStepsForCompraBocadillos();
+            selectBocadillosForCompra_PO.AddBocadilloToComprarCart(bocadilloNombre1);
+            selectBocadillosForCompra_PO.Comprar();
+
+            createCompra_PO.ClickModificarBocadillos();
+
+            Assert.Contains("selectbocadillosforcompra", _driver.Url);
+            Assert.True(_driver.PageSource.Contains(bocadilloNombre1));
+        }
+
+        [Theory]
+        [InlineData("", "Garcia", "The NombreCliente field is required.")]
+        [InlineData("Pepe", "", "The Apellido1Cliente field is required.")]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void UC1_AF4_Validacion_Campos_Obligatorios(string nombre, string apellido1, string mensajeError)
+        {
+
+            InitialStepsForCompraBocadillos();
+            selectBocadillosForCompra_PO.AddBocadilloToComprarCart(bocadilloNombre1);
+            selectBocadillosForCompra_PO.Comprar();
+
+    
+            createCompra_PO.RellenarDatosCliente(nombre, apellido1, "", metodoPagoTarjeta);
+            createCompra_PO.SeleccionarBocadilloCantidad(bocadilloNombre1, 2);
+            createCompra_PO.ClickGuardar();
+
+            Assert.True(createCompra_PO.CheckMessageError(mensajeError));
+            Assert.Contains("createcompra", _driver.Url);
         }
 
     }
