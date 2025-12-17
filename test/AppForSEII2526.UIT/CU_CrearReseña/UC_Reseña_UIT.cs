@@ -222,5 +222,54 @@ namespace AppForSEII2526.UIT.UC_Reseña
 
             Assert.True(tablaCorrecta, "ERROR: La tabla de bocadillos en Detalles no es correcta.");
         }
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void UC2_Examen()
+        {
+            Initial_step_opening_the_web_page();
+            _selectBocadillos_PO.WaitForBeingVisible(By.Id("nav-crear-resena"));
+            _driver.FindElement(By.Id("nav-crear-resena")).Click();
+            System.Threading.Thread.Sleep(2000);
+
+            _selectBocadillos_PO.AnadirBocadillo(bocadilloNombre1); System.Threading.Thread.Sleep(2000);
+            _selectBocadillos_PO.FiltrarBocadillos("", "3.00"); System.Threading.Thread.Sleep(2000);
+            _selectBocadillos_PO.AnadirBocadillo(bocadilloNombre3); System.Threading.Thread.Sleep(2000);
+            _selectBocadillos_PO.QuitarBocadillo(bocadilloNombre1); System.Threading.Thread.Sleep(2000);
+
+            _selectBocadillos_PO.IrACrearReseña(); System.Threading.Thread.Sleep(3000);
+
+            string usuarioEsp = "Oscar123";
+            string tituloEsp = "Sugerencia para persistencia";
+            string descEsp = "Probando que no se borra nada al volver";
+            string valGeneralEsp = "Cinco";
+            string puntuacionBocadilloEsp2 = "8";
+
+            _postReseña_PO.RellenarDatosGenerales(usuarioEsp, tituloEsp, descEsp, valGeneralEsp); Thread.Sleep(1000);
+            _postReseña_PO.RellenarPuntuacionBocadillo(bocadilloNombre3, puntuacionBocadilloEsp2); Thread.Sleep(1000);
+
+            _postReseña_PO.PublicarReseña();
+
+
+            System.Threading.Thread.Sleep(4000);
+
+
+
+            //Ver si nos hemos salido del crearReseña
+            Assert.False(_postReseña_PO.EstoyEnFormulario(),
+                "ERROR: El formulario sigue visible. Revisa si ha fallado el clic del modal o la validación.");
+
+
+            bool datosCorrectos = _detailReseña_PO.CompruebaDetalle(
+                "Oscar123",
+                "Sugerencia para persistencia",
+                "Probando que no se borra nada al volver",
+                "Cinco",
+                DateTime.Now
+            );
+
+            Assert.True(datosCorrectos, "ERROR: Los datos mostrados en Detalles no coinciden con los introducidos.");
+
+        }
     }
 }
