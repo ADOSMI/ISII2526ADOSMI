@@ -92,7 +92,99 @@ namespace AppForSEII2526.UIT.CU_ComprarBonos
 
         }
 
-        
+        [Fact]
+        public void UC3_1_Modificacion_Examen()
+        {
+            // Arrange
+            var seleccionarBonos_PO = new SeleccionarBonos_PO(_driver, _output);
+            var crearCompraBonos_PO = new CrearCompraBonos_PO(_driver, _output);
+            var detalleCompraBonos_PO = new DetalleCompraBonos_PO(_driver, _output);
+
+            string nombre = "Adolfo";
+            string precio = "3";
+            string numeroBocadillos = "3";
+            string tipoBocadillo = "Serrano";
+
+            string nombre2 = "Bono1";
+            string precio2 = "4";
+            string numeroBocadillos2 = "5";
+            string tipoBocadillo2 = "Bufalo";
+
+            string filtroNombre = "Adolfo";
+            
+
+            string nombreInput = "Adolfo";
+            string ap1Input = "Escribano";
+            string ap2Input = "Martinez";
+            string metodoPago = "Tarjeta";
+
+
+            string precioTotal = "3";
+            string fechaEsperada = DateTime.Now.ToString("dd/MM/yyyy");
+
+            var listaBonosEsperada = new List<string[]>
+            {
+                new string[] { nombre, tipoBocadillo, precio }
+            };
+
+
+            var bonosEsperados = new List<string[]>();
+            bonosEsperados.Add(new string[] { "Adolfo", "Serrano", "3 €", "10" });
+
+
+
+            var expectedCompra = new List<string[]> { new string[] { nombreInput, ap1Input, ap2Input, metodoPago, fechaEsperada, precioTotal, nombre, tipoBocadillo, precio } };
+
+
+
+            // Act ---------
+            Initial_step_opening_the_web_page();
+
+            // Navegar hasta la página de Comprar Videojuegos.
+            SeleccionarBonos_PO.WaitForBeingVisible(By.Id("nav-comprar-bono"));
+            _driver.FindElement(By.Id("nav-comprar-bono")).Click();
+
+            // Seleccionar el videojuego 1
+            seleccionarBonos_PO.SeleccionarBonos(new List<string>() { "Bono1" });
+
+            // Filtro por nombre
+
+            seleccionarBonos_PO.FiltrarBonosForCompra(filtroNombre, "");
+
+            //Añado nuevo bono
+
+            seleccionarBonos_PO.SeleccionarBonos(new List<string>() { "Adolfo" });
+            
+            //Quito el primer bono 
+
+            seleccionarBonos_PO.DeseleccionarBono("Bono1");
+
+            // Pulsar el botón de comprar.
+            seleccionarBonos_PO.Comprar();
+
+            // Seleccionar como método de pago Tarjeta.
+            crearCompraBonos_PO.setMetodoPago(metodoPago);
+
+            //Datos de la compra
+            crearCompraBonos_PO.setDatos(nombreInput, ap1Input, ap2Input, metodoPago);
+
+            // Pulsar comprar para finalizar la compra.
+            crearCompraBonos_PO.Comprar();
+            crearCompraBonos_PO.ConfirmarPedido();
+            // Ahora se debe haber mostrado la página de detalle y puedo comprobar si todo ha ido bien.
+
+
+            Console.Write(_driver.PageSource);
+            System.Threading.Thread.Sleep(2000);
+            // Assert
+            Assert.True(detalleCompraBonos_PO.CompruebaTotal(bonosEsperados));
+            Assert.True(detalleCompraBonos_PO.CompruebaCompra(expectedCompra)); //Comprobamos los detalles de la compra
+            Assert.True(detalleCompraBonos_PO.CompruebaListaVideojuegos(listaBonosEsperada)); //Comprobamos la lista de videojuegos comprados
+
+
+        }
+
+
 
         [Fact]
         public void UC3_2_No_Hay_Bonos()
