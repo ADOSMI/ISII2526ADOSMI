@@ -146,6 +146,36 @@ namespace AppForSEII2526.UIT.UC_PedirBocadillo
             };
         }
 
+
+        [Fact]
+        [Trait("LevelTesting", "Funcional Testing")]
+        public void Sprint3_funcion()
+        {
+            InitialStepsForCompraBocadillos();
+            selectBocadillosForCompra_PO.AddBocadilloToComprarCart(bocadilloNombre2);
+            selectBocadillosForCompra_PO.SearchBocadillos(bocadilloTamano1, "");
+            selectBocadillosForCompra_PO.AddBocadilloToComprarCart(bocadilloNombre1);
+            selectBocadillosForCompra_PO.RemoveMovieFromRentingCart(bocadilloNombre2);
+            selectBocadillosForCompra_PO.Comprar();
+
+            // Rellenar datos
+            createCompra_PO.RellenarDatosCliente(clienteNombre, clienteApellido1, clienteApellido2, metodoPagoTarjeta);
+            createCompra_PO.SeleccionarBocadilloCantidad(bocadilloNombre1, 2);
+
+            // Guardar y Confirmar Modal
+            createCompra_PO.ClickGuardar();
+            detailCompraBocadillo_PO.WaitForDetailsPage();
+
+            // Verificamos URL
+            Assert.Contains("detailcompra", _driver.Url);
+
+
+            // Verificamos que el producto comprado
+            var expectedItems = new List<string[]> {
+                new string[] { bocadilloNombre2, bocadilloTipoPan1, "2" }
+            };
+        }
+
     }
 }
 
