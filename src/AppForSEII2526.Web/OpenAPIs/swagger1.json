@@ -1016,9 +1016,6 @@
             "type": "number",
             "format": "double"
           },
-          "applicationUser": {
-            "$ref": "#/components/schemas/ApplicationUser"
-          },
           "itemsBono": {
             "type": "array",
             "items": {
